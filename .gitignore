@@ -1,0 +1,39 @@
+# ---------------------------------------------------------------------------
+# Secrets and machine-local material. Nothing here may ever be committed.
+# ---------------------------------------------------------------------------
+# The client signing private key. Registered on a specific device under
+# physical presence; generate your own (see docs/REPRODUCING.md).
+client_key.pem
+*.pem
+*.key
+
+# ---------------------------------------------------------------------------
+# Generated Matter data model.
+#
+# `zap/generated/zap-generated/` is ~16 MB of Matter SDK output, almost all of
+# it standard clusters that have nothing to do with this component. It is a
+# derived artifact of a pinned SDK commit and would rot against any bump.
+# Regenerate it with the three commands in docs/REPRODUCING.md; the inputs that
+# determine it — VendorTunnelCluster.xml, add_tunnel_cluster.py, the .zap and
+# the .matter IDL — are all tracked.
+# ---------------------------------------------------------------------------
+zap/generated/zap-generated/
+
+# ---------------------------------------------------------------------------
+# Build products
+# ---------------------------------------------------------------------------
+build/
+*-build.log
+*.hex
+*.elf
+*.map
+rcp-dongle.zip
+
+# ---------------------------------------------------------------------------
+# Environments and editor/OS noise
+# ---------------------------------------------------------------------------
+measure/venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store

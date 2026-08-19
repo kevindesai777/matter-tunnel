@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  VendorTunnel — a manufacturer-specific Matter cluster providing a single
+  opaque request/response byte tunnel.
+
+  Purpose: carry application-layer-authenticated payloads end-to-end between a
+  client and a device, so that an intermediating Matter hub relays bytes it can
+  neither interpret nor forge. Matter deliberately models none of the payload's
+  structure.
+
+  Defined against Matter Core Specification v1.6, Section 7.21 (Manufacturer
+  Specific Extensions). Cluster ID is a Manufacturer Extensible Identifier:
+  the upper 16 bits are the vendor ID, the lower 16 bits are in the
+  manufacturer-specific cluster range 0xFC00-0xFFFE.
+
+    0xFFF1FC02
+      ^^^^      vendor ID 0xFFF1 (test vendor; replace for production)
+          ^^^^  cluster ID 0xFC02
+
+  0xFC01 is deliberately avoided: it is used by the NordicDevKit cluster in the
+  nRF Connect SDK manufacturer_specific sample, which is this file's structural
+  reference. Avoiding it keeps both clusters loadable in one ZCL database.
+
+  This file is the portable artifact. It carries no device-type semantics and
+  is intended to drop into any Matter application - lock, thermostat, switch,
+  or otherwise.
+
+  SPDX-License-Identifier: Apache-2.0
+-->
+<configurator>
+  <domain name="General"/>
+
+  <cluster>
+    <domain>General</domain>
+    <name>VendorTunnel</name>
+    <code>0xfff1fc02</code>
+    <define>VENDOR_TUNNEL_CLUSTER</define>
+    <description>An opaque bidirectional byte tunnel. Carries application-layer authenticated payloads end-to-end, reducing an intermediating hub to an untrusted relay. The payload is deliberately not modelled by Matter.</description>
+
+    <!--
+      TunnelRequest: client -> server.
+
+      Payload is opaque. In this project it carries a signed envelope binding
+      the request bytes, a monotonic counter, the command identity, and a
+      device-owned identity. Note that the envelope MUST NOT bind to the Matter
+      operational NodeId: NodeId is reassigned on re-commissioning, so a scheme
+      keyed on it fails silently after a re-pair.
+
+      length is a build-time ceiling, not a protocol constant. It must
+      accommodate the application payload plus the authentication overhead
+      (for Ed25519: a 64-byte signature plus counter and binding fields).
+      Larger values cost RAM in the message buffers.
+    -->
+    <command source="client" code="0xfff10000" name="TunnelRequest" optional="false" response="TunnelResponse">
+      <description>Send an opaque payload to the device and request an opaque payload in reply.</description>
+      <arg name="Payload" type="octet_string" length="512" optional="false"/>
+    </command>
+
+    <!--
+      TunnelResponse: server -> client.
+
+      disableDefaultResponse is set because this command IS the response; a
+      Matter default response in addition would be redundant.
+    -->
+    <command source="server" code="0xfff10001" name="TunnelResponse" optional="false" disableDefaultResponse="true">
+      <description>Opaque payload returned by the device in reply to TunnelRequest.</description>
+      <arg name="Payload" type="octet_string" length="512" optional="false"/>
+    </command>
+  </cluster>
+</configurator>

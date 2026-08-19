@@ -1,0 +1,58 @@
+scanning for 'MatterLock' ...
+  found F7:24:14:05:08:84
+/usr/lib/python3/dist-packages/bleak/backends/bluezdbus/client.py:632: UserWarning: Using default MTU value. Call _acquire_mtu() or set _mtu_size first to avoid this warning.
+  warnings.warn(
+  connected, ATT MTU = 23
+  ! MTU 23 is too small for a signed envelope; results would measure fragmentation
+  warm-up rtt=29.9 ms type=0xff
+
+interleaving 1000 samples per condition (signed / unsigned)
+
+  25/1000  unsigned n=25 signed n=25 errors=0
+  50/1000  unsigned n=50 signed n=50 errors=0
+  75/1000  unsigned n=75 signed n=75 errors=0
+  100/1000  unsigned n=100 signed n=100 errors=0
+  125/1000  unsigned n=125 signed n=125 errors=0
+  150/1000  unsigned n=150 signed n=150 errors=0
+  175/1000  unsigned n=175 signed n=175 errors=0
+  200/1000  unsigned n=200 signed n=200 errors=0
+  225/1000  unsigned n=225 signed n=225 errors=0
+  250/1000  unsigned n=250 signed n=250 errors=0
+  275/1000  unsigned n=275 signed n=275 errors=0
+  300/1000  unsigned n=300 signed n=300 errors=0
+  325/1000  unsigned n=325 signed n=325 errors=0
+  350/1000  unsigned n=350 signed n=350 errors=0
+  375/1000  unsigned n=375 signed n=375 errors=0
+  400/1000  unsigned n=400 signed n=400 errors=0
+  425/1000  unsigned n=425 signed n=425 errors=0
+  450/1000  unsigned n=450 signed n=450 errors=0
+  475/1000  unsigned n=475 signed n=475 errors=0
+  500/1000  unsigned n=500 signed n=500 errors=0
+  525/1000  unsigned n=525 signed n=525 errors=0
+  550/1000  unsigned n=550 signed n=550 errors=0
+  575/1000  unsigned n=575 signed n=575 errors=0
+  600/1000  unsigned n=600 signed n=600 errors=0
+  625/1000  unsigned n=625 signed n=625 errors=0
+  650/1000  unsigned n=650 signed n=650 errors=0
+  675/1000  unsigned n=675 signed n=675 errors=0
+  700/1000  unsigned n=700 signed n=700 errors=0
+  725/1000  unsigned n=725 signed n=725 errors=0
+  750/1000  unsigned n=750 signed n=750 errors=0
+  775/1000  unsigned n=775 signed n=775 errors=0
+  800/1000  unsigned n=800 signed n=800 errors=0
+  825/1000  unsigned n=825 signed n=825 errors=0
+  850/1000  unsigned n=850 signed n=850 errors=0
+  875/1000  unsigned n=875 signed n=875 errors=0
+  900/1000  unsigned n=900 signed n=900 errors=0
+  925/1000  unsigned n=925 signed n=925 errors=0
+  950/1000  unsigned n=950 signed n=950 errors=0
+  975/1000  unsigned n=975 signed n=975 errors=0
+  1000/1000  unsigned n=1000 signed n=1000 errors=0
+
+unsigned (echo)        n= 1000  p50=   29.0  p95=   29.1  p99=   44.1  min=   28.5  max=  134.1 ms
+signed                 n= 1000  p50=   60.7  p95=   75.7  p99=   90.8  min=   60.2  max=  225.4 ms
+
+delta p50 = +31.7 ms
+request bytes: unsigned 7 -> signed 79
+errors: 0
+csv: /home/pi/ble-results.csv

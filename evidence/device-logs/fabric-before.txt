@@ -1,0 +1,3 @@
+I: 246 [FP]Fabric index 0x1 was retrieved from storage. Compressed FabricId 0xFD887FC5963E9AF4, FabricId 0xE01BFB743CD5B0EB, NodeId 0x606D24EDAB445A2B, VendorId 0x110A
+I: 266 [FP]Fabric index 0x2 was retrieved from storage. Compressed FabricId 0xF5DFB8E1C88249D7, FabricId 0x0000000000000001, NodeId 0x0000000000000001, VendorId 0xFFF1
+CommissionedFabrics: 2

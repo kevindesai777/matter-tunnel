@@ -1,0 +1,36 @@
+matter-tunnel
+Copyright 2026 Kevin Desai
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+--------------------------------------------------------------------------
+Third-party material
+--------------------------------------------------------------------------
+
+This repository is a component and an example application. It does not
+vendor its dependencies; it is built against them.
+
+  Matter SDK (project-chip/connectedhomeip)   Apache-2.0
+  Zephyr RTOS                                 Apache-2.0
+  OpenThread                                  BSD-3-Clause
+  nRF Connect SDK (nrfconnect/sdk-nrf)        LicenseRef-Nordic-5-Clause
+  nRF Door Lock and Access Control Add-on     LicenseRef-Nordic-5-Clause
+
+`examples/lock/` derives its Kconfig and board files from Nordic Semiconductor
+sample configuration and retains Nordic's SPDX headers and copyright where the
+original text survives. Those files remain under LicenseRef-Nordic-5-Clause,
+which permits use with Nordic Semiconductor integrated circuits.
+
+Everything under `lib/tunnel/`, `zap/VendorTunnelCluster.xml`,
+`zap/add_tunnel_cluster.py`, `measure/` and `tools/` is original work by the
+copyright holder and is Apache-2.0.
+
+The example application compiles the upstream door lock application's sources
+*in place* rather than copying them, so no Nordic application source is
+redistributed here. Obtain it from:
+
+  https://github.com/nrfconnect/ncs-door-lock-and-access-control
+
+Device attestation certificates under `evidence/test-vectors/` are Matter
+*test* credentials (VID 0xFFF1) from the public Matter SDK development PKI.
+They are not production credentials and confer no attestation of conformance.

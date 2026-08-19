@@ -1,0 +1,143 @@
+*** Booting My Application v1.1.0 - unknown commit ***
+*** Using nRF Connect SDK v3.4.0-99553055607b ***
+*** Using Zephyr OS v4.4.0-bf801e4e3d19 ***
+
+uart:~$ I: 55 [DL]BLE address: D8:BB:B1:76:06:5C
+I: 69 [DL]CHIP task running
+I: Init CHIP stack
+I: 106 [DL]OpenThread ifconfig up and thread start
+I: 112 [DL]OpenThread started: OK
+I: 115 [DL]Setting OpenThread device type to MINIMAL END DEVICE
+I: 146 [SVR]Initializing subscription resumption storage...
+I: 153 [SVR]Server initializing...
+I: 158 [TS]Last Known Good Time: 2026-08-17T17:13:16
+I: 168 [FP]Fabric index 0x1 was retrieved from storage. Compressed FabricId 0xFD887FC5963E9AF4, FabricId 0xE01BFB743CD5B0EB, NodeId 0x606D24EDAB445A2B, VendorId 0x110A
+I: 187 [FP]Fabric index 0x2 was retrieved from storage. Compressed FabricId 0xF5DFB8E1C88249D7, FabricId 0x0000000000000001, NodeId 0x0000000000000001, VendorId 0xFFF1
+I: 204 [DMG]AccessControl: initializing
+I: 208 [DMG]Examples::AccessControlDelegate::Init
+I: 213 [DMG]AccessControl: setting
+I: 217 [DMG]DefaultAclStorage: initializing
+I: 225 [DMG]DefaultAclStorage: 2 entries loaded
+I: 289 [ZCL]Using ZAP configuration...
+I: 294 [ZCL]Door Lock server initialized
+I: 298 [ZCL]VendorTunnel: server initialised
+I: 305 [ZCL]Door Lock cluster initialized at endpoint #1
+I: 316 [DMG]AccessControlCluster: initializing
+I: 321 [SVR]Fabric already commissioned. Disabling BLE advertisement
+I: 328 [DIS]Updating services using commissioning mode 0
+E: 333 [DIS]Failed to remove advertised services: 3
+I: 338 [DIS]Advertise operational node FD887FC5963E9AF4-606D24EDAB445A2B
+E: 346 [DIS]Failed to advertise operational node: 3
+E: 351 [DIS]Failed to finalize service update: 3
+I: 355 [IN]CASE Server enabling CASE session setups
+I: 361 [SVR]Server Listening...
+I: 364 [DL]Device Configuration:
+I: 368 [DL]  Serial Number: 11223344556677889900
+I: 372 [DL]  Vendor Id: 65521 (0xFFF1)
+I: 376 [DL]  Product Id: 32774 (0x8006)
+I: 380 [DL]  Product Name: Matter Tunnel Lock
+I: 385 [DL]  Hardware Version: 0
+I: 388 [DL]  Setup Pin Code (0 for UNKNOWN/ERROR): 20202021
+I: 394 [DL]  Setup Discriminator (0xFFFF for UNKNOWN/ERROR): 3840 (0xF00)
+I: 401 [DL]  Manufacturing Date: 2022-01-01
+I: 405 [DL]  Device Type: 65535 (0xFFFF)
+I: 409 [SVR]SetupQRCode: [MT:8IXS142C00KA0648G00]
+I: 414 [SVR]Copy/paste the below URL in a browser to see the QR Code:
+I: 421 [SVR]https://project-chip.github.io/connectedhomeip/qrcode.html?data=MT%3A8IXS142C00KA0648G00
+I: 431 [SVR]Manual pairing code: [34970112332]
+E: 436 [DL]Long dispatch time: 364 ms, for event type 2
+I: 1481 [DL]SRP Client was started, detected server: fdeb:5871:3f3e:f928:5d92:89be:25a2:525b
+I: 1490 [ZCL]ThreadDiagnosticsDelegate: OnConnectionStatusChanged
+I: 1503 [SVR]Joining Multicast groups
+I: 1891 [SVR]Server initialization complete
+I: 1895 [DIS]Updating services using commissioning mode 0
+I: 1901 [DIS]Advertise operational node FD887FC5963E9AF4-606D24EDAB445A2B
+I: 1908 [DL]advertising srp service: FD887FC5963E9AF4-606D24EDAB445A2B._matter._tcp
+I: 1916 [DIS]Advertise operational node F5DFB8E1C88249D7-0000000000000001
+I: 1924 [DL]advertising srp service: F5DFB8E1C88249D7-0000000000000001._matter._tcp
+I: 1958 [IM]Resuming 1 subscriptions in 0 seconds
+I: 1969 [SWU]Stopping the watchdog timer
+I: 1973 [SWU]Starting the periodic query timer, timeout: 86400 seconds
+I: 1983 [DIS]Resolving FD887FC5963E9AF4:08B6A30EF723941C ...
+I: 1990 [DIS]Lookup started for FD887FC5963E9AF4-08B6A30EF723941C
+I: 2051 [DIS]Node ID resolved for FD887FC5963E9AF4-08B6A30EF723941C
+I: 2058 [DIS]UDP:[2001:db8:0:3800:7221:1fa4:ad00:f0e3]:49982: new best score: 4 (for FD887FC5963E9AF4-08B6A30EF723941C)
+I: 2070 [DIS]Checking node lookup status for FD887FC5963E9AF4-08B6A30EF723941C after 87 ms
+I: 2079 [DIS]Keeping DNSSD lookup active
+I: 2183 [DIS]Checking node lookup status for FD887FC5963E9AF4-08B6A30EF723941C after 200 ms
+I: 2193 [SC]Initiating session on local FabricIndex 1 from 0x606D24EDAB445A2B -> 0x08B6A30EF723941C
+I: 2300 [EM]<<< [E:15637i S:0 M:230146324] (U) Msg TX from 862C85276683E44D to 0:0000000000000000 [0000] [UDP:[2001:db8:0:3800:7221:1fa4:ad00:f0e3]:49982] --- Type 0000:30 (SecureChannel:CASE_Sigma1) (B:234)
+I: 2325 [EM]??1 [E:15637i S:0 M:230146324] (U) Msg Retransmission to 0:0000000000000000 scheduled for 1909ms from now [State:Active II:500 AI:300 AT:4000]
+I: 2342 [SC]Sent Sigma1 msg to <08B6A30EF723941C, 1> [II:2000ms AI:2000ms AT:4000ms]
+I: 2410 [EM]>>> [E:15637i S:0 M:81567396 (Ack:230146324)] (U) Msg RX from 0:0000000000000000 [0000] to 862C85276683E44D --- Type 0000:33 (SecureChannel:CASE_Sigma2Resume) (B:100)
+I: 2428 [EM]<<< [E:15637i S:0 M:230146325 (Ack:81567396)] (U) Msg TX from 862C85276683E44D to 0:0000000000000000 [0000] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 2546 [EM]<<< [E:15637i S:0 M:230146326 (Ack:81567396)] (U) Msg TX from 862C85276683E44D to 0:0000000000000000 [0000] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0000:40 (SecureChannel:StatusReport) (B:34)
+I: 2569 [EM]??1 [E:15637i S:0 M:230146326] (U) Msg Retransmission to 0:0000000000000000 scheduled for 1831ms from now [State:Active II:500 AI:300 AT:4000]
+I: 2586 [SC]SecureSession[0x20010478, LSID:41368]: State change 'kEstablishing' --> 'kActive'
+I: 2596 [DMG]Registered a ReadHandler that will schedule a report between system Timestamp: 0x0000000000000A23 and system Timestamp 0x000000000001DEE3.
+E: 2853 [DL]Long dispatch time: 443 ms, for event type 3
+I: 2859 [EM]>>> [E:15637i S:0 M:81567397 (Ack:230146326)] (U) Msg RX from 0:0000000000000000 [0000] to 862C85276683E44D --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 2896 [EM]<<< [E:15638i S:41368 M:254974604] (S) Msg TX from 606D24EDAB445A2B to 1:08B6A30EF723941C [9AF4] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0001:05 (IM:ReportData) (B:290)
+I: 2916 [EM]??1 [E:15638i S:41368 M:254974604] (S) Msg Retransmission to 1:08B6A30EF723941C scheduled for 1908ms from now [State:Active II:500 AI:300 AT:4000]
+I: 2985 [EM]>>> [E:15638i S:41368 M:266075219 (Ack:254974604)] (S) Msg RX from 1:08B6A30EF723941C [9AF4] to 606D24EDAB445A2B --- Type 0001:01 (IM:StatusResponse) (B:42)
+I: 3002 [IM]Received status response, status is 0x00
+I: 3008 [EM]<<< [E:15638i S:41368 M:254974605 (Ack:266075219)] (S) Msg TX from 606D24EDAB445A2B to 1:08B6A30EF723941C [9AF4] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:34)
+I: 3330 [EM]>>> [E:9919r S:41368 M:266075220] (S) Msg RX from 1:08B6A30EF723941C [9AF4] to 606D24EDAB445A2B --- Type 0001:02 (IM:ReadRequest) (B:37)
+I: 3346 [EM]<<< [E:9919r S:41368 M:254974606] (S) Msg TX from 606D24EDAB445A2B to 1:08B6A30EF723941C [9AF4] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0001:05 (IM:ReportData) (B:37)
+I: 3366 [EM]??1 [E:9919r S:41368 M:254974606] (S) Msg Retransmission to 1:08B6A30EF723941C scheduled for 1840ms from now [State:Active II:500 AI:300 AT:4000]
+I: 3411 [EM]>>> [E:9919r S:41368 M:266075221 (Ack:254974606)] (S) Msg RX from 1:08B6A30EF723941C [9AF4] to 606D24EDAB445A2B --- Type 0000:10 (SecureChannel:StandaloneAck) (B:34)
+I: 51107 [EM]>>> [E:14301r S:0 M:92443943] (U) Msg RX from 0:1425A4CEFE157829 [0000] to 0000000000000000 --- Type 0000:30 (SecureChannel:CASE_Sigma1) (B:196)
+I: 51123 [IN]CASE Server received Sigma1 message . Starting handshake. EC 0x20012828
+I: 51131 [EM]<<< [E:14301r S:0 M:230146327 (Ack:92443943)] (U) Msg TX from 0000000000000000 to 0:1425A4CEFE157829 [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:51282] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 51154 [SC]Received Sigma1 msg
+I: 51170 [SC]CASE matched destination ID: fabricIndex 2, NodeID 0x0000000000000001
+I: 51267 [EM]<<< [E:14301r S:0 M:230146328 (Ack:92443943)] (U) Msg TX from 0000000000000000 to 0:1425A4CEFE157829 [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:51282] --- Type 0000:31 (SecureChannel:CASE_Sigma2) (B:751)
+I: 51291 [EM]??1 [E:14301r S:0 M:230146328] (U) Msg Retransmission to 0:0000000000000000 scheduled for 1897ms from now [State:Active II:500 AI:300 AT:4000]
+I: 51308 [SC]Sent Sigma2 msg
+E: 51311 [DL]Long dispatch time: 204 ms, for event type 3
+I: 51481 [EM]>>> [E:14301r S:0 M:92443944 (Ack:230146328)] (U) Msg RX from 0:1425A4CEFE157829 [0000] to 0000000000000000 --- Type 0000:32 (SecureChannel:CASE_Sigma3) (B:598)
+I: 51499 [EM]<<< [E:14301r S:0 M:230146329 (Ack:92443944)] (U) Msg TX from 0000000000000000 to 0:1425A4CEFE157829 [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:51282] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 51521 [SC]Received Sigma3 msg
+E: 51530 [SC]The device does not support GetClock_RealTimeMS() API: 3.  Falling back to Last Known Good UTC Time
+E: 51715 [DL]Long dispatch time: 174 ms, for event type 2
+I: 51811 [EM]<<< [E:14301r S:0 M:230146330 (Ack:92443944)] (U) Msg TX from 0000000000000000 to 0:1425A4CEFE157829 [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:51282] --- Type 0000:40 (SecureChannel:StatusReport) (B:34)
+I: 51834 [EM]??1 [E:14301r S:0 M:230146330] (U) Msg Retransmission to 0:0000000000000000 scheduled for 1838ms from now [State:Active II:500 AI:300 AT:4000]
+I: 51852 [SC]SecureSession[0x200103a0, LSID:41367]: State change 'kEstablishing' --> 'kActive'
+I: 51861 [IN]CASE Session established to peer: <000000000001B669, 2>
+E: 51871 [DL]Long dispatch time: 150 ms, for event type 2
+I: 51881 [EM]>>> [E:14302r S:41367 M:220181057] (S) Msg RX from 2:000000000001B669 [49D7] to 0000000000000001 --- Type 0001:08 (IM:InvokeCommandRequest) (B:147)
+I: 51901 [ZCL]tunnel: reusing persistent key id=0x5401
+I: 51953 [ZCL]VendorTunnel: identity bundle ready (1060 B)
+I: 51960 [ZCL]tunnel-replay: floor=1064 ceiling=1064 persistent=yes
+I: 51968 [ZCL]tunnel-clientkey: NO key registered (press Button 4 to open a 60 s registration window)
+E: 51978 [ZCL]VendorTunnel: no client key registered; command refused
+I: 51986 [EM]<<< [E:14302r S:41367 M:27402167 (Ack:220181057)] (S) Msg TX from 0000000000000001 to 2:000000000001B669 [49D7] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:51282] --- Type 0001:09 (IM:InvokeCommandResponse) (B:74)
+I: 52010 [EM]??1 [E:14302r S:41367 M:27402167] (S) Msg Retransmission to 2:000000000001B669 scheduled for 1908ms from now [State:Active II:500 AI:300 AT:4000]
+E: 52026 [DL]Long dispatch time: 146 ms, for event type 3
+I: 52032 [EM]>>> [E:14301r S:0 M:92443945 (Ack:230146330)] (U) Msg RX from 0:1425A4CEFE157829 [0000] to 0000000000000000 --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 52053 [EM]>>> [E:14302r S:41367 M:220181058 (Ack:27402167)] (S) Msg RX from 2:000000000001B669 [49D7] to 0000000000000001 --- Type 0000:10 (SecureChannel:StandaloneAck) (B:34)
+I: 52648 [EM]>>> [E:63965r S:0 M:126474013] (U) Msg RX from 0:8B496A30D61C37EF [0000] to 0000000000000000 --- Type 0000:30 (SecureChannel:CASE_Sigma1) (B:196)
+I: 52663 [IN]CASE Server received Sigma1 message . Starting handshake. EC 0x20012828
+I: 52672 [EM]<<< [E:63965r S:0 M:230146331 (Ack:126474013)] (U) Msg TX from 0000000000000000 to 0:8B496A30D61C37EF [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:60406] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 52695 [SC]Received Sigma1 msg
+I: 52711 [SC]CASE matched destination ID: fabricIndex 2, NodeID 0x0000000000000001
+I: 52807 [EM]<<< [E:63965r S:0 M:230146332 (Ack:126474013)] (U) Msg TX from 0000000000000000 to 0:8B496A30D61C37EF [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:60406] --- Type 0000:31 (SecureChannel:CASE_Sigma2) (B:751)
+I: 52831 [EM]??1 [E:63965r S:0 M:230146332] (U) Msg Retransmission to 0:0000000000000000 scheduled for 1883ms from now [State:Active II:500 AI:300 AT:4000]
+I: 52848 [SC]Sent Sigma2 msg
+E: 52852 [DL]Long dispatch time: 204 ms, for event type 3
+I: 53014 [EM]>>> [E:63965r S:0 M:126474014 (Ack:230146332)] (U) Msg RX from 0:8B496A30D61C37EF [0000] to 0000000000000000 --- Type 0000:32 (SecureChannel:CASE_Sigma3) (B:598)
+I: 53031 [EM]<<< [E:63965r S:0 M:230146333 (Ack:126474014)] (U) Msg TX from 0000000000000000 to 0:8B496A30D61C37EF [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:60406] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 53054 [SC]Received Sigma3 msg
+E: 53063 [SC]The device does not support GetClock_RealTimeMS() API: 3.  Falling back to Last Known Good UTC Time
+E: 53248 [DL]Long dispatch time: 174 ms, for event type 2
+I: 53346 [EM]<<< [E:63965r S:0 M:230146334 (Ack:126474014)] (U) Msg TX from 0000000000000000 to 0:8B496A30D61C37EF [0000] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:60406] --- Type 0000:40 (SecureChannel:StatusReport) (B:34)
+I: 53369 [EM]??1 [E:63965r S:0 M:230146334] (U) Msg Retransmission to 0:0000000000000000 scheduled for 1906ms from now [State:Active II:500 AI:300 AT:4000]
+I: 53386 [SC]SecureSession[0x20010550, LSID:41369]: State change 'kEstablishing' --> 'kActive'
+I: 53396 [IN]CASE Session established to peer: <000000000001B669, 2>
+E: 53405 [DL]Long dispatch time: 152 ms, for event type 2
+I: 53411 [EM]>>> [E:63965r S:0 M:126474015 (Ack:230146334)] (U) Msg RX from 0:8B496A30D61C37EF [0000] to 0000000000000000 --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 53433 [EM]>>> [E:63966r S:41369 M:203658829] (S) Msg RX from 2:000000000001B669 [49D7] to 0000000000000001 --- Type 0001:08 (IM:InvokeCommandRequest) (B:103)
+E: 53450 [ZCL]VendorTunnel: registration refused (window CLOSED)
+I: 53458 [EM]<<< [E:63966r S:41369 M:73554611 (Ack:203658829)] (S) Msg TX from 0000000000000001 to 2:000000000001B669 [49D7] [UDP:[2001:db8:0:3800:9daf:f4a4:c9d7:6907]:60406] --- Type 0001:09 (IM:InvokeCommandResponse) (B:74)
+I: 53481 [EM]??1 [E:63966r S:41369 M:73554611] (S) Msg Retransmission to 2:000000000001B669 scheduled for 1857ms from now [State:Active II:500 AI:300 AT:4000]
+I: 53516 [EM]>>> [E:63966r S:41369 M:203658830 (Ack:73554611)] (S) Msg RX from 2:000000000001B669 [49D7] to 0000000000000001 --- Type 0000:10 (SecureChannel:StandaloneAck) (B:34)

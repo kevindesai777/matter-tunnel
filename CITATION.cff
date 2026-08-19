@@ -1,0 +1,51 @@
+cff-version: 1.2.0
+title: >-
+  matter-tunnel: a portable Matter vendor cluster carrying
+  application-layer authenticated payloads end-to-end
+message: >-
+  If you use this software or its measurement data, please cite it
+  using the metadata below.
+type: software
+authors:
+  - family-names: Desai
+    given-names: Kevin
+    email: kevindesai777@gmail.com
+    # orcid: "https://orcid.org/0000-0000-0000-0000"   # TODO before tagging
+repository-code: "https://github.com/kevindesai777/matter-tunnel"
+license: Apache-2.0
+version: 1.0.0
+date-released: "2026-08-18"
+keywords:
+  - Matter
+  - Thread
+  - IoT security
+  - smart home
+  - device attestation
+  - manufacturer-specific cluster
+  - vendor cluster
+  - trust boundary
+  - Ed25519
+  - nRF52840
+  - embedded systems
+  - reproducible measurement
+abstract: >-
+  Matter grants every commissioned hub genuine authority over the device it
+  controls: a hub can operate a lock, not merely relay a user's request.
+  Certification verifies that a device conforms to the specification, never
+  that a hub merits that authority.
+
+  This is a drop-in Matter component that removes the hub from the device's
+  trust boundary without giving up ecosystem interoperability. A
+  manufacturer-specific cluster carries an opaque bidirectional byte tunnel;
+  an application-layer signing layer authenticates payloads end-to-end in both
+  directions, binding the device's tunnel key to its own Matter Device
+  Attestation Certificate so a relaying hub can neither read nor forge them.
+
+  The repository includes the component, a thin example application, an
+  interleaved measurement harness, and the raw datasets behind the reported
+  results: three transports at n=1000 each, showing that signing costs about
+  40 ms end-to-end and that this cost is invariant to the transport carrying
+  it, agreeing with an isolated on-device benchmark to within the width of a
+  confidence interval. Decomposing the path shows a commercial hub contributes
+  about 13% of round-trip latency against about 59% for Matter over Thread
+  itself.

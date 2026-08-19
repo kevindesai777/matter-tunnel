@@ -1,0 +1,99 @@
+*** Booting My Application v1.1.0 - unknown commit ***
+*** Using nRF Connect SDK v3.4.0-99553055607b ***
+*** Using Zephyr OS v4.4.0-bf801e4e3d19 ***
+
+uart:~$ I: 55 [DL]BLE address: CD:9F:B5:68:C7:05
+I: 68 [DL]CHIP task running
+I: Init CHIP stack
+I: 105 [DL]OpenThread ifconfig up and thread start
+I: 110 [DL]OpenThread started: OK
+I: 114 [DL]Setting OpenThread device type to MINIMAL END DEVICE
+I: 145 [SVR]Initializing subscription resumption storage...
+I: 152 [SVR]Server initializing...
+I: 157 [TS]Last Known Good Time: 2026-08-17T17:13:16
+I: 166 [FP]Fabric index 0x1 was retrieved from storage. Compressed FabricId 0xFD887FC5963E9AF4, FabricId 0xE01BFB743CD5B0EB, NodeId 0x606D24EDAB445A2B, VendorId 0x110A
+I: 185 [FP]Fabric index 0x2 was retrieved from storage. Compressed FabricId 0xF5DFB8E1C88249D7, FabricId 0x0000000000000001, NodeId 0x0000000000000001, VendorId 0xFFF1
+I: 203 [DMG]AccessControl: initializing
+I: 207 [DMG]Examples::AccessControlDelegate::Init
+I: 212 [DMG]AccessControl: setting
+I: 215 [DMG]DefaultAclStorage: initializing
+I: 223 [DMG]DefaultAclStorage: 2 entries loaded
+I: 288 [ZCL]Using ZAP configuration...
+I: 293 [ZCL]Door Lock server initialized
+I: 300 [ZCL]VendorTunnel: server initialised
+I: 304 [ZCL]tunnel-bench: starting (cpu=64000000 Hz, iterations=20, msg=64 B)
+I: 337 [ZCL]tunnel-bench: === ECDSA-P256 === pubkey=65 B  keygen=20991 cyc (327 us)
+I: 1070 [DL]SRP Client was started, detected server: fdeb:5871:3f3e:f928:5d92:89be:25a2:525b
+I: 2662 [ZCL]tunnel-bench: ECDSA-P256 signature=64 B
+I: 2667 [ZCL]tunnel-bench: sign               n=20  min=1938879 cyc (30294 us)  avg=2003037 cyc (31297 us)  max=2937077 cyc (45891 us)
+I: 2680 [ZCL]tunnel-bench: verify             n=20  min=5137875 cyc (80279 us)  avg=5411928 cyc (84561 us)  max=9086841 cyc (141981 us)
+I: 2774 [ZCL]tunnel-bench: ECDSA-P256 tamper-check ok (rejected)
+I: 2789 [ZCL]tunnel-bench: === Ed25519 === pubkey=32 B  keygen=20481 cyc (320 us)
+I: 3593 [ZCL]tunnel-bench: Ed25519 signature=64 B
+I: 3598 [ZCL]tunnel-bench: sign               n=20  min=1067057 cyc (16672 us)  avg=1068078 cyc (16688 us)  max=1070424 cyc (16725 us)
+I: 3611 [ZCL]tunnel-bench: verify             n=20  min=1463887 cyc (22873 us)  avg=1481616 cyc (23150 us)  max=1502701 cyc (23479 us)
+I: 3647 [ZCL]tunnel-bench: Ed25519 tamper-check ok (rejected)
+I: 3653 [ZCL]tunnel-bench: done
+I: 3659 [ZCL]Door Lock cluster initialized at endpoint #1
+I: 3669 [DMG]AccessControlCluster: initializing
+I: 3675 [SVR]Fabric already commissioned. Disabling BLE advertisement
+I: 3682 [DIS]Updating services using commissioning mode 0
+I: 3688 [DIS]Advertise operational node FD887FC5963E9AF4-606D24EDAB445A2B
+I: 3695 [DL]advertising srp service: FD887FC5963E9AF4-606D24EDAB445A2B._matter._tcp
+I: 3703 [DIS]Advertise operational node F5DFB8E1C88249D7-0000000000000001
+I: 3711 [DL]advertising srp service: F5DFB8E1C88249D7-0000000000000001._matter._tcp
+I: 3719 [IN]CASE Server enabling CASE session setups
+I: 3725 [SVR]Server initialization complete
+I: 3729 [SVR]Server Listening...
+I: 3732 [DL]Device Configuration:
+I: 3736 [DL]  Serial Number: 11223344556677889900
+I: 3741 [DL]  Vendor Id: 65521 (0xFFF1)
+I: 3745 [DL]  Product Id: 32774 (0x8006)
+I: 3749 [DL]  Product Name: Matter Tunnel Lock
+I: 3753 [DL]  Hardware Version: 0
+I: 3757 [DL]  Setup Pin Code (0 for UNKNOWN/ERROR): 20202021
+I: 3763 [DL]  Setup Discriminator (0xFFFF for UNKNOWN/ERROR): 3840 (0xF00)
+I: 3770 [DL]  Manufacturing Date: 2022-01-01
+I: 3774 [DL]  Device Type: 65535 (0xFFFF)
+I: 3779 [SVR]SetupQRCode: [MT:8IXS142C00KA0648G00]
+I: 3784 [SVR]Copy/paste the below URL in a browser to see the QR Code:
+I: 3790 [SVR]https://project-chip.github.io/connectedhomeip/qrcode.html?data=MT%3A8IXS142C00KA0648G00
+I: 3800 [SVR]Manual pairing code: [34970112332]
+E: 3805 [DL]Long dispatch time: 3734 ms, for event type 2
+I: 3829 [ZCL]ThreadDiagnosticsDelegate: OnConnectionStatusChanged
+I: 3860 [DIS]Updating services using commissioning mode 0
+I: 3866 [DIS]Advertise operational node FD887FC5963E9AF4-606D24EDAB445A2B
+I: 3873 [DIS]Advertise operational node F5DFB8E1C88249D7-0000000000000001
+I: 3905 [IM]Resuming 1 subscriptions in 0 seconds
+I: 3916 [SWU]Stopping the watchdog timer
+I: 3979 [SWU]Starting the periodic query timer, timeout: 86400 seconds
+E: 3987 [DL]Long dispatch time: 106 ms, for event type 32790
+I: 3994 [SVR]Joining Multicast groups
+I: 4004 [DIS]Resolving FD887FC5963E9AF4:08B6A30EF723941C ...
+I: 4012 [DIS]Lookup started for FD887FC5963E9AF4-08B6A30EF723941C
+I: 4107 [DIS]Node ID resolved for FD887FC5963E9AF4-08B6A30EF723941C
+I: 4114 [DIS]UDP:[2001:db8:0:3800:7221:1fa4:ad00:f0e3]:49982: new best score: 4 (for FD887FC5963E9AF4-08B6A30EF723941C)
+I: 4126 [DIS]Checking node lookup status for FD887FC5963E9AF4-08B6A30EF723941C after 122 ms
+I: 4135 [DIS]Keeping DNSSD lookup active
+I: 4204 [DIS]Checking node lookup status for FD887FC5963E9AF4-08B6A30EF723941C after 200 ms
+I: 4214 [SC]Initiating session on local FabricIndex 1 from 0x606D24EDAB445A2B -> 0x08B6A30EF723941C
+I: 4258 [EM]<<< [E:21981i S:0 M:42485062] (U) Msg TX from 6108572E9416C06D to 0:0000000000000000 [0000] [UDP:[2001:db8:0:3800:7221:1fa4:ad00:f0e3]:49982] --- Type 0000:30 (SecureChannel:CASE_Sigma1) (B:234)
+I: 4280 [EM]??1 [E:21981i S:0 M:42485062] (U) Msg Retransmission to 0:0000000000000000 scheduled for 2097ms from now [State:Idle II:500 AI:300 AT:4000]
+I: 4296 [SC]Sent Sigma1 msg to <08B6A30EF723941C, 1> [II:2000ms AI:2000ms AT:4000ms]
+I: 4327 [EM]>>> [E:21981i S:0 M:81567384 (Ack:42485062)] (U) Msg RX from 0:0000000000000000 [0000] to 6108572E9416C06D --- Type 0000:33 (SecureChannel:CASE_Sigma2Resume) (B:100)
+I: 4345 [EM]<<< [E:21981i S:0 M:42485063 (Ack:81567384)] (U) Msg TX from 6108572E9416C06D to 0:0000000000000000 [0000] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 4465 [EM]<<< [E:21981i S:0 M:42485064 (Ack:81567384)] (U) Msg TX from 6108572E9416C06D to 0:0000000000000000 [0000] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0000:40 (SecureChannel:StatusReport) (B:34)
+I: 4488 [EM]??1 [E:21981i S:0 M:42485064] (U) Msg Retransmission to 0:0000000000000000 scheduled for 1890ms from now [State:Active II:500 AI:300 AT:4000]
+I: 4505 [SC]SecureSession[0x20010438, LSID:42974]: State change 'kEstablishing' --> 'kActive'
+I: 4514 [DMG]Registered a ReadHandler that will schedule a report between system Timestamp: 0x00000000000011A2 and system Timestamp 0x000000000001E662.
+E: 4651 [DL]Long dispatch time: 324 ms, for event type 3
+I: 4657 [EM]>>> [E:21981i S:0 M:81567385 (Ack:42485064)] (U) Msg RX from 0:0000000000000000 [0000] to 6108572E9416C06D --- Type 0000:10 (SecureChannel:StandaloneAck) (B:26)
+I: 4694 [EM]<<< [E:21982i S:42974 M:239608967] (S) Msg TX from 606D24EDAB445A2B to 1:08B6A30EF723941C [9AF4] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0001:05 (IM:ReportData) (B:290)
+I: 4715 [EM]??1 [E:21982i S:42974 M:239608967] (S) Msg Retransmission to 1:08B6A30EF723941C scheduled for 1890ms from now [State:Active II:500 AI:300 AT:4000]
+I: 4786 [EM]>>> [E:21982i S:42974 M:42320121 (Ack:239608967)] (S) Msg RX from 1:08B6A30EF723941C [9AF4] to 606D24EDAB445A2B --- Type 0001:01 (IM:StatusResponse) (B:42)
+I: 4802 [IM]Received status response, status is 0x00
+I: 4809 [EM]<<< [E:21982i S:42974 M:239608968 (Ack:42320121)] (S) Msg TX from 606D24EDAB445A2B to 1:08B6A30EF723941C [9AF4] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0000:10 (SecureChannel:StandaloneAck) (B:34)
+I: 4978 [EM]>>> [E:9913r S:42974 M:42320122] (S) Msg RX from 1:08B6A30EF723941C [9AF4] to 606D24EDAB445A2B --- Type 0001:02 (IM:ReadRequest) (B:37)
+I: 4993 [EM]<<< [E:9913r S:42974 M:239608969] (S) Msg TX from 606D24EDAB445A2B to 1:08B6A30EF723941C [9AF4] [UDP:[2001:db8:0:380e:8729:f89f:da3d:250e]:49982] --- Type 0001:05 (IM:ReportData) (B:37)
+I: 5014 [EM]??1 [E:9913r S:42974 M:239608969] (S) Msg Retransmission to 1:08B6A30EF723941C scheduled for 1850ms from now [State:Active II:500 AI:300 AT:4000]
+I: 5057 [EM]>>> [E:9913r S:42974 M:42320123 (Ack:239608969)] (S) Msg RX from 1:08B6A30EF723941C [9AF4] to 606D24EDAB445A2B --- Type 0000:10 (SecureChannel:StandaloneAck) (B:34)
