@@ -9,8 +9,8 @@ Built clean-room against the public Matter specification and SDK. The component
 carries no device-type semantics and drops into any Matter application. The door lock
 here is one example of that.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22004764.svg)](https://doi.org/10.5281/zenodo.22004764)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-<!-- DOI badge is added when the first release is archived. -->
 
 ---
 
@@ -268,8 +268,27 @@ build from this repository reproduces the measured configuration and footprint.
 
 ## Citing
 
-See [CITATION.cff](CITATION.cff). Each release is archived with a DOI; cite the
-version you used.
+Each release is archived on Zenodo. Cite the version you used, or the concept DOI
+if you mean the software generally.
+
+| | |
+|---|---|
+| All versions (concept DOI) | [10.5281/zenodo.22004764](https://doi.org/10.5281/zenodo.22004764) |
+| v1.0.0 | [10.5281/zenodo.22004765](https://doi.org/10.5281/zenodo.22004765) |
+
+```bibtex
+@software{desai_matter_tunnel_2026,
+  author  = {Desai, Kevin},
+  title   = {{matter-tunnel: a portable Matter vendor cluster carrying
+             application-layer authenticated payloads end-to-end}},
+  version = {1.0.0},
+  year    = {2026},
+  doi     = {10.5281/zenodo.22004764},
+  url     = {https://github.com/kevindesai777/matter-tunnel}
+}
+```
+
+Machine-readable metadata is in [CITATION.cff](CITATION.cff).
 
 ---
 
