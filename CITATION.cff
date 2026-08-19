@@ -10,7 +10,7 @@ authors:
   - family-names: Desai
     given-names: Kevin
     email: kevindesai777@gmail.com
-    # orcid: "https://orcid.org/0000-0000-0000-0000"   # TODO before tagging
+    orcid: "https://orcid.org/0009-0003-3125-0547"
 repository-code: "https://github.com/kevindesai777/matter-tunnel"
 license: Apache-2.0
 version: 1.0.0
