@@ -1,9 +1,8 @@
 # Security
 
 This is research code accompanying a measurement paper. It has not been audited,
-and it is not a product. The list below is not a disclaimer added for form — each
-entry is a gap that was found deliberately and is stated in the paper. Read it
-before building anything on this.
+and it is not a product. Every entry below is a gap we went looking for and found,
+and each one is stated in the paper. Read it before building anything on this.
 
 ## What the mechanism does establish
 
@@ -22,20 +21,20 @@ rejection:
 - **Key authenticity against the hub.** The device's tunnel public key is signed by
   its Matter Device Attestation Certificate key, and the DAC chains to a public CSA
   root. The hub holds no DAC private key, so it cannot substitute its own key
-  undetected — which is what makes it safe to fetch the bundle through the
-  hub-relayed tunnel itself, with no out-of-band channel.
+  undetected, which is what makes it safe to fetch the bundle through the hub-relayed
+  tunnel itself, with no out-of-band channel.
 
 ## What it does not establish
 
-### 1. The swap attack — specified, not implemented
+### 1. The swap attack, specified but not implemented
 
 DAC validation proves *a* genuine device of the expected VID/PID. It does not prove
 *the user's* device. A hostile hub could substitute a different genuine unit of the
 same model and every check above still passes.
 
 The fix is a short fingerprint of the tunnel public key, printed beside the setup QR
-code and checked by the client at setup — the same trust root as the commissioning
-passcode, which the user already transcribes from the device. **This is specified
+code and checked by the client at setup. That is the same trust root as the
+commissioning passcode, which the user already transcribes from the device. **This is specified
 and not implemented here.** Do not read the DAC binding as a defence against it.
 
 ### 2. One counter space means one client
@@ -62,8 +61,8 @@ structurally identical; the trust root is not. Certificates under
 
 Payloads are authenticated end to end, not encrypted. A hub cannot forge or alter
 them; it *can* read them. Matter's own CASE session encrypts the link, so the hub is
-the observer of interest — but if payload confidentiality against the hub is
-required, the envelope needs an AEAD layer, which this does not have.
+the observer of interest. If payload confidentiality against the hub is required, the
+envelope needs an AEAD layer, which this does not have.
 
 ## Reporting a vulnerability
 

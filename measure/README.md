@@ -14,10 +14,10 @@ No figure in that README is transcribed by hand.
 
 | File | n | What it is |
 |---|---:|---|
-| `results-smartthings.csv` | 1000 | Matter over Thread through a commercial hub — the treatment |
-| `results-otbr-final.csv` | 1000 | Matter over Thread through our own border router — **the control**, and the reportable OTBR run |
-| `results-otbr.csv` | 1000 | The same control at −85 dBm instead of −26 dBm. **Retained as evidence, not as a result** — see below |
-| `results-ble.csv` | 1000 | Direct BLE, no Matter, no Thread, no hub — the transport floor |
+| `results-smartthings.csv` | 1000 | Matter over Thread through a commercial hub. The treatment |
+| `results-otbr-final.csv` | 1000 | Matter over Thread through our own border router. **The control**, and the reportable OTBR run |
+| `results-otbr.csv` | 1000 | The same control at −85 dBm instead of −26 dBm. **Retained as evidence, not as a result**; see below |
+| `results-ble.csv` | 1000 | Direct BLE, no Matter, no Thread, no hub. The transport floor |
 | `pilot*.csv` | 5–20 | Pilot runs used to size the protocol; not reported |
 
 Columns are `seq, condition, counter, rtt_ms, resp_type, req_bytes, unix_time`.
@@ -37,7 +37,7 @@ border router, same harness, same protocol.
 | `results-otbr-final.csv` | −26 dBm | 90 ms | 95 ms | 115 ms | 300 ms | 4.9σ |
 
 Link margin alone moves p50 by 6 ms and p99 by 64 ms, and inflates the unsigned
-standard deviation from 8.3 ms to 63.3 ms — enough to bury a real 40 ms effect under
+standard deviation from 8.3 ms to 63.3 ms, enough to bury a real 40 ms effect under
 noise and report it as marginal. The weak-link dataset is in the repository because
 the finding it supports is a methodological one: **an RF condition nobody wrote down
 can decide whether an effect is detectable at all.**
@@ -48,7 +48,7 @@ can decide whether an effect is detectable at all.**
   drift in ambient RF cannot correlate with the treatment. The effect is smaller than
   the spread, which is exactly the regime where blocking goes wrong.
 - **Timestamps come from chip-tool's EM layer**, TX of `InvokeCommandRequest` to RX
-  of `InvokeCommandResponse` — not from Python wall clock, so harness overhead is
+  of `InvokeCommandResponse`, not from Python wall clock, so harness overhead stays
   outside the measurement.
 - **One CASE session serves the whole run.** A fresh process per sample would measure
   mDNS discovery and session establishment, one to two seconds, rather than the

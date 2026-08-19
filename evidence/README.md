@@ -16,7 +16,7 @@ are locally generated and are unmodified.
 | File | What it shows |
 |---|---|
 | `primitive-bench-oberon.log` | DWT cycle-counter benchmark, Oberon software: Ed25519 16.7 ms sign / 23.2 ms verify against P-256's 31.3 / 84.6 |
-| `primitive-bench-cc310.log` | The same benchmark with CryptoCell CC310 enabled — P-256 improves to 19.4 / 37.2, and Ed25519 becomes **unavailable** (`PSA_ERROR_NOT_SUPPORTED`) |
+| `primitive-bench-cc310.log` | The same benchmark with CryptoCell CC310 enabled. P-256 improves to 19.4 / 37.2, and Ed25519 becomes unavailable (`PSA_ERROR_NOT_SUPPORTED`) |
 | `primitive-bench-*.conf` | The build overlays that produced each, so the comparison is reproducible |
 | `identity-binding.log` | DAC signed by PAI, DAC key signing the tunnel public key, and a tampered key rejected |
 | `signing-verification.log` | Forgery and replay rejected on hardware; altered counter, flipped direction, tampered payload and substituted device key each rejected |
@@ -33,10 +33,10 @@ Public material only. No private key appears in this repository.
 | `pai.der` | The Product Attestation Intermediate that signed it |
 | `tunnel_pub.bin` | The device's tunnel public key, 32 bytes |
 | `dac_sig.bin` | The DAC key's signature over the tunnel public key |
-| `identity-bundle.bin` | The complete bundle as fetched over the wire, 1060 bytes — about 90% X.509 |
+| `identity-bundle.bin` | The complete bundle as fetched over the wire, 1060 bytes, about 90% of it X.509 |
 | `resp_sig.bin`, `resp_meta.bin` | A captured signed response and its binding fields |
 
-⚠️ These are **test** credentials from the public Matter development PKI, under the
+⚠️ These are *test* credentials from the public Matter development PKI, under the
 test vendor ID `0xFFF1`. They attest to nothing and must never be treated as
 production attestation. A shipping device carries a production DAC; the binding is
 structurally identical, the trust root is not.
