@@ -39,14 +39,21 @@ Two measurements on this bench make the problem concrete:
 If topology cannot remove a hub from the trust boundary, cryptography has to. That
 is what this component is for.
 
-**The mechanism is not novel and this repository does not claim it is.** Putting
-security mechanisms into Matter manufacturer-specific clusters is the subject of
-Mangar, Chandler, Pierson and Kotz, *"Enabling Research Extensions in Matter via
-Custom Clusters"* (NDSS SDIoTSec 2026). End-to-end authentication through untrusted
-intermediaries is older still: JEDI (USENIX Security 2019) and OSCORE (RFC 8613).
+**The mechanism is not novel and this repository does not claim it is.** The template
+for adding a manufacturer-specific cluster to Matter is published by Mangar, Chandler,
+Pierson and Kotz, *"Enabling Research Extensions in Matter via Custom Clusters"*
+(SDIoTSec 2026, [doi:10.14722/sdiotsec.2026.23064](https://dx.doi.org/10.14722/sdiotsec.2026.23064)),
+who offer it as an enabling step for researchers. This is one instance of what it
+enables. End-to-end authentication through untrusted intermediaries is older still:
+JEDI (USENIX Security 2019) and OSCORE (RFC 8613).
+
 What is contributed here is a working implementation on constrained silicon, the
-measured cost of running it, and measurements of what commercial ecosystems actually
-do with the authority they hold.
+measured cost of running it, and measurements of what commercial ecosystems do with
+the authority they hold. Two differences are worth naming for anyone reusing this
+rather than that template: the cluster is registered by deriving an application data
+model from the stock one with a re-runnable script, leaving the upstream application
+untouched, and it is driven by an **unmodified** `chip-tool` addressing it by raw
+identifier, so any specification-conformant controller works without patching.
 
 ---
 
