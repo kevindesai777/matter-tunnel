@@ -40,3 +40,10 @@ __pycache__/
 
 # Same rationale as zap/generated/zap-generated/ - regenerate per docs/REPRODUCING.md
 zap/generated-bulb/zap-generated/
+
+# Fabric-lifecycle captures from named commercial ecosystems. The boot records
+# carry that ecosystem's FabricId and NodeId for THIS bench, which are persistent
+# identifiers of a real person's home rather than of the experiment. The paper
+# needs the structure and the behaviour, not the identifiers. Redact before
+# publishing any such capture; do not let `git add -A` decide.
+evidence/device-logs/fabric-apple*
