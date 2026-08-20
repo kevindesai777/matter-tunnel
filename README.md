@@ -105,9 +105,17 @@ bench showed link margin alone moving p50 by 6 ms and p99 by 64 ms.
 
 | | Flash | RAM |
 |---|---:|---:|
-| Tunnel cluster, transport only | **+612 B** | **0 B** |
-| Complete security layer | **+19,652 B** | **+3,840 B** |
-| Resulting image | 797,604 B of 974,698 B (81.83%) | 167,452 B of 256 KB (63.88%) |
+| Tunnel cluster, transport only | **+808 B** | **+576 B** |
+| Complete security layer | **+19,404 B** | **+3,008 B** |
+| Resulting image | 797,600 B of 974,698 B (81.83%) | 167,452 B of 256 KB (63.88%) |
+
+Measured against the unmodified application at 777,388 B and 163,868 B, same configuration,
+on 2026-08-20. Every stage rebuilds from this tree; `docs/REPRODUCING.md` has the commands.
+
+512 B of the transport stage's 576 B is a single response buffer, which exists because
+`tunnel::ProcessRequest` writes into a buffer the transport hands it. That indirection is what
+lets the Matter and BLE adapters share one core, and a Matter-only handler building its
+response inline would not need it. The buffer is a cost of portability, not of the cluster.
 
 Wire overhead is 7 → 79 bytes. The identity bundle is 1060 B, fetched once at client
 setup in four chunks, never per command. About 90% of it is X.509, which makes key

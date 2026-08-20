@@ -74,10 +74,7 @@ source "$(ZEPHYR_CONNECTEDHOMEIP_MODULE_DIR)/config/nrfconnect/chip-module/Kconf
 source "$(ZEPHYR_NRF_MODULE_DIR)/samples/matter/common/src/Kconfig"
 source "Kconfig.zephyr"
 
-config TUNNEL_CRYPTO_BENCHMARK
-	bool "Run the on-device sign/verify benchmark at cluster init"
-	default n
-	help
-	  Measures ECDSA P-256 and Ed25519 sign/verify cost with the DWT cycle
-	  counter and logs the results. Measurement builds only; it adds flash
-	  and delays startup.
+# VendorTunnel component options, including the two staging switches used to
+# rebuild the cumulative footprint stages. Kept with the component so every
+# example gets them from one place.
+rsource "../../lib/tunnel/Kconfig"

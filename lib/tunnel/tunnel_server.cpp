@@ -33,12 +33,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "tunnel_client_key.h"
 #include "tunnel_core.h"
+
+#if defined(CONFIG_TUNNEL_SECURITY)
 #include "tunnel_crypto.h"
 #include "tunnel_envelope.h"
 #include "tunnel_identity.h"
 #include "tunnel_replay.h"
+#endif
+
+#if defined(CONFIG_TUNNEL_CLIENT_AUTH)
+#include "tunnel_client_key.h"
+#endif
 
 #include <app-common/zap-generated/callback.h>
 #include <app-common/zap-generated/ids/Clusters.h>
@@ -52,15 +58,23 @@ using namespace ::chip::app::Clusters;
 
 namespace {
 
+constexpr uint8_t kTypeEcho = 0xFF;
+
+#if defined(CONFIG_TUNNEL_SECURITY)
 constexpr uint8_t kTypeIdentityRequest = 0x00;
 constexpr uint8_t kTypeIdentityResponse = 0x01;
 constexpr uint8_t kTypeSignedRequest = 0x02;
 constexpr uint8_t kTypeSignedResponse = 0x03;
 constexpr uint8_t kTypeReplayReject = 0x04;
+#endif
+
+#if defined(CONFIG_TUNNEL_CLIENT_AUTH)
 constexpr uint8_t kTypeRegisterClientKey = 0x05;
 constexpr uint8_t kTypeRegisterAck = 0x06;
 constexpr uint8_t kTypeAuthReject = 0x07;
-constexpr uint8_t kTypeEcho = 0xFF;
+#endif
+
+#if defined(CONFIG_TUNNEL_SECURITY)
 
 /* Response framing is 5 bytes (type, offset, total); keep the chunk well inside
  * the 512-byte payload ceiling declared in the cluster XML. */
@@ -115,7 +129,11 @@ bool EnsureReplay()
 		return false;
 	}
 	gReplayReady = true;
+#if defined(CONFIG_TUNNEL_CLIENT_AUTH)
+	/* The key store shares this lazy-init point rather than having its own:
+	 * both are needed by the first signed request and by nothing earlier. */
 	tunnel::GetClientKeyStore().Init();
+#endif
 	return true;
 }
 
@@ -132,6 +150,8 @@ void PutU32(uint8_t *p, uint32_t v)
 	p[2] = static_cast<uint8_t>(v >> 8);
 	p[3] = static_cast<uint8_t>(v);
 }
+
+#endif /* CONFIG_TUNNEL_SECURITY */
 
 } // namespace
 
@@ -164,6 +184,7 @@ size_t tunnel::ProcessRequest(const uint8_t *inData, size_t inLen, uint8_t *out,
 		return in.size();
 	}
 
+#if defined(CONFIG_TUNNEL_SECURITY)
 	case kTypeIdentityRequest: {
 		if (in.size() < 3) {
 			*reject = tunnel::Reject::InvalidCommand;
@@ -243,6 +264,7 @@ size_t tunnel::ProcessRequest(const uint8_t *inData, size_t inLen, uint8_t *out,
 		/* Authenticity before freshness: an unauthenticated peer must not
 		 * be able to drive the replay counter - or the flash writes it
 		 * triggers - forward. */
+#if defined(CONFIG_TUNNEL_CLIENT_AUTH)
 		auto &store = tunnel::GetClientKeyStore();
 		if (!store.HasKey()) {
 			ChipLogError(Zcl, "VendorTunnel: no client key registered; command refused");
@@ -266,6 +288,13 @@ size_t tunnel::ProcessRequest(const uint8_t *inData, size_t inLen, uint8_t *out,
 				return 1;
 			}
 		}
+#else
+		/* Requests are accepted unverified in this configuration. The
+		 * signature field is still parsed so the wire format is
+		 * unchanged, but nothing is checked against it. */
+		(void)reqSig;
+		(void)reqSigLen;
+#endif /* CONFIG_TUNNEL_CLIENT_AUTH */
 
 		/* Freshness first: reject a stale counter and tell the client the
 		 * current floor so it can resynchronise without a separate
@@ -327,6 +356,7 @@ size_t tunnel::ProcessRequest(const uint8_t *inData, size_t inLen, uint8_t *out,
 		return n;
 	}
 
+#if defined(CONFIG_TUNNEL_CLIENT_AUTH)
 	case kTypeRegisterClientKey: {
 		/* Layout: u8 type, u16 len + client_pubkey
 		 *
@@ -398,6 +428,8 @@ size_t tunnel::ProcessRequest(const uint8_t *inData, size_t inLen, uint8_t *out,
 				static_cast<unsigned>(stored.size()), static_cast<unsigned>(sigLen));
 		return n;
 	}
+#endif /* CONFIG_TUNNEL_CLIENT_AUTH */
+#endif /* CONFIG_TUNNEL_SECURITY */
 
 	default:
 		ChipLogError(Zcl, "VendorTunnel: unknown envelope type 0x%02x", type);
@@ -453,8 +485,10 @@ bool emberAfVendorTunnelClusterTunnelRequestCallback(
 }
 
 namespace tunnel {
+#if defined(CONFIG_TUNNEL_CRYPTO_BENCHMARK)
 void RunCryptoBenchmark();
 void ReportIdentityBundle();
+#endif
 #ifdef CONFIG_BT_NUS
 void BleTransportScheduleInit();
 #endif

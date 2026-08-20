@@ -104,10 +104,36 @@ nrfutil sdk-manager toolchain launch --ncs-version v3.4.0 --chdir <workspace> --
 west flash -d <build-dir>
 ```
 
-Expect 797,604 B of flash (81.83%) and 167,452 B of RAM (63.88%) for the full
+Expect 797,600 B of flash (81.83%) and 167,452 B of RAM (63.88%) for the full
 signed build. If the flash figure lands near 79.8% you have a *sleepy* device and the
 wrong device under test. Check that `CONFIG_OPENTHREAD_MTD_SED` and
 `CONFIG_CHIP_ENABLE_ICD_SUPPORT` are both unset in the generated `.config`.
+
+**Expect the flash figure to vary by 4 bytes depending on where you got the source.** Zephyr
+puts the application's git description in the boot banner, so the banner's length depends on it.
+A clone carries the commit hash and gives 797,600 B; the Zenodo archive has no `.git`, so the
+banner reads `unknown commit` and the image is 797,604 B. The code is identical and nothing else
+in the build varies.
+
+### 3a. Rebuilding the cost stages
+
+The footprint is reported as cumulative stages, and each is a build:
+
+| Stage | Command | Flash | RAM |
+|---|---|---:|---:|
+| base | build the upstream application with `CONFIG_OPENTHREAD_MTD_SED=n` and `CONFIG_CHIP_ENABLE_ICD_SUPPORT=n` | 777,388 B | 163,868 B |
+| transport only | `-Dlock_EXTRA_CONF_FILE=<repo>/examples/lock/footprint-stage2.conf` | 778,196 B | 164,444 B |
+| + signing, replay, binding | `-Dlock_EXTRA_CONF_FILE=<repo>/examples/lock/footprint-stage3.conf` | 796,008 B | 166,428 B |
+| complete | no overlay | 797,600 B | 167,452 B |
+
+The two overlays set `CONFIG_TUNNEL_SECURITY` and `CONFIG_TUNNEL_CLIENT_AUTH`, declared in
+`lib/tunnel/Kconfig`. Both default to `y`, so an ordinary build is the complete one. Neither
+reduced configuration is meant for deployment: stage 2 carries no authority, and stage 3 signs
+its responses while accepting any caller's requests.
+
+The base must be built with the two MED options set explicitly. The upstream application
+defaults to a sleepy end device, which is a different device under test and about 2,500 B
+smaller. Comparing against that would understate every delta.
 
 For the BLE floor condition, add the overlay. The image name comes from the
 application directory, so the option prefix is `lock_`:

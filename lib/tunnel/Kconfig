@@ -1,0 +1,52 @@
+#
+# VendorTunnel component configuration.
+#
+# These symbols live with the component rather than with any one example app so
+# that every example -- and every application dropping the component in -- gets
+# the same options from one place. Source it from the application's Kconfig:
+#
+#     rsource "<path-to>/lib/tunnel/Kconfig"
+#
+# The two staging options exist because the component's cost is reported as a
+# series of cumulative deltas (transport, then security, then client auth), and
+# a cost claim that cannot be rebuilt is not evidence. Both default to y, so an
+# ordinary build is the complete one.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+config TUNNEL_SECURITY
+	bool "VendorTunnel security layer"
+	default y
+	help
+	  Device identity bound to the Matter DAC, Ed25519 response signing, the
+	  monotonic replay counter, and direction/device binding of the signed
+	  preimage.
+
+	  Turning this off leaves the cluster, its opaque envelope and the echo
+	  command -- transport with no cryptography. That configuration carries
+	  no authority and is intended for measuring the transport's cost in
+	  isolation, not for deployment.
+
+config TUNNEL_CLIENT_AUTH
+	bool "VendorTunnel client authentication"
+	depends on TUNNEL_SECURITY
+	default y
+	help
+	  Registration of a client public key under physical presence, and
+	  verification of every inbound signed request against it.
+
+	  Turning this off leaves responses signed by the device but accepts
+	  requests from any caller. The device is then authenticated to the
+	  client but the client is not authenticated to the device, which is
+	  half the trust relationship the component exists to establish. For
+	  measurement only.
+
+config TUNNEL_CRYPTO_BENCHMARK
+	bool "Run the on-device sign/verify benchmark at cluster init"
+	depends on TUNNEL_SECURITY
+	default n
+	help
+	  Measures ECDSA P-256 and Ed25519 sign/verify cost with the DWT cycle
+	  counter and logs the results. Measurement builds only; it adds flash
+	  and delays startup.

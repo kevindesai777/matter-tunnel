@@ -71,16 +71,30 @@ target_sources(app PRIVATE
   ${UPSTREAM_APP_DIR}/src/main.cpp
   ${UPSTREAM_APP_DIR}/src/zcl_callbacks.cpp
 
-  # the drop-in component — the only additions
+  # the drop-in component — the only additions.
+  # The cluster and its opaque envelope; always present.
   ${TUNNEL_ROOT}/lib/tunnel/tunnel_server.cpp
   ${TUNNEL_ROOT}/lib/tunnel/tunnel_cluster_objects.cpp
-  ${TUNNEL_ROOT}/lib/tunnel/tunnel_crypto.cpp
-  ${TUNNEL_ROOT}/lib/tunnel/tunnel_bench.cpp
-  ${TUNNEL_ROOT}/lib/tunnel/tunnel_identity.cpp
-  ${TUNNEL_ROOT}/lib/tunnel/tunnel_envelope.cpp
-  ${TUNNEL_ROOT}/lib/tunnel/tunnel_replay.cpp
-  ${TUNNEL_ROOT}/lib/tunnel/tunnel_client_key.cpp
 )
+
+# The security layer. Excluded wholesale when CONFIG_TUNNEL_SECURITY=n, which is
+# how the transport-only footprint stage is built. tunnel_bench.cpp belongs here
+# rather than under CONFIG_TUNNEL_CRYPTO_BENCHMARK: it includes tunnel_crypto.h
+# unconditionally, and the linker discards its body when the benchmark is off.
+if(CONFIG_TUNNEL_SECURITY)
+  target_sources(app PRIVATE
+    ${TUNNEL_ROOT}/lib/tunnel/tunnel_crypto.cpp
+    ${TUNNEL_ROOT}/lib/tunnel/tunnel_bench.cpp
+    ${TUNNEL_ROOT}/lib/tunnel/tunnel_identity.cpp
+    ${TUNNEL_ROOT}/lib/tunnel/tunnel_envelope.cpp
+    ${TUNNEL_ROOT}/lib/tunnel/tunnel_replay.cpp
+  )
+endif()
+
+# Client key registration and inbound request verification.
+if(CONFIG_TUNNEL_CLIENT_AUTH)
+  target_sources(app PRIVATE ${TUNNEL_ROOT}/lib/tunnel/tunnel_client_key.cpp)
+endif()
 
 # Second transport adapter, for the BLE floor measurement (condition 0).
 # Compiled only when the NUS service is configured in, so the Matter-only build

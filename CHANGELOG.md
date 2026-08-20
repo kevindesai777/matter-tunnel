@@ -1,5 +1,47 @@
 # Changelog
 
+## 1.1.0 (2026-08-20)
+
+Makes the reported cost reproducible. No change to the shipped configuration: a default
+build of 1.1.0 is byte-identical to 1.0.0 at 797,600 B of flash and 167,452 B of RAM.
+
+### Added
+
+- `lib/tunnel/Kconfig`, so the component carries its own configuration instead of each
+  example redeclaring it. `CONFIG_TUNNEL_CRYPTO_BENCHMARK` moved here from
+  `examples/lock/Kconfig`.
+- `CONFIG_TUNNEL_SECURITY` and `CONFIG_TUNNEL_CLIENT_AUTH`, both defaulting to `y`.
+  Turning them off builds the transport-only and unauthenticated-request stages of the
+  cost table. Neither reduced build is for deployment.
+- `examples/lock/footprint-stage2.conf` and `footprint-stage3.conf`, which select those
+  stages, and a table of expected figures in `docs/REPRODUCING.md`.
+
+### Corrected
+
+The 1.0.0 figures below were measured on 2026-08-17, before the core was extracted into
+`tunnel::ProcessRequest` for the second transport adapter. That refactor shipped in 1.0.0
+but the numbers were not re-derived against it. Rebuilt from this tree:
+
+| | 1.0.0 said | Actual |
+|---|---:|---:|
+| Tunnel cluster, transport only | +612 B flash, 0 B RAM | **+808 B flash, +576 B RAM** |
+| Complete security layer | +19,652 B flash, +3,840 B RAM | **+19,404 B flash, +3,008 B RAM** |
+
+512 B of the transport stage's RAM is the response buffer `ProcessRequest` writes into. It is
+a cost of the transport-agnostic core. 1.0.0 counted it against the security layer, because
+the Matter-only handler it replaced had built its response inline.
+
+### Fixed
+
+- `EnsureReplay()` initialised the client key store, so the replay counter did not
+  compile without client authentication. The two subsystems were coupled by a lazy-init
+  shortcut rather than by design.
+- `docs/REPRODUCING.md` gave one flash figure without saying that the boot banner carries
+  the git description, so a build from the Zenodo archive is 4 B larger than one from a
+  clone. Both are correct.
+- `README.md` paired a +3,840 B RAM delta with a 167,452 B image, which did not reconcile
+  against the base.
+
 ## 1.0.0 (2026-08-19)
 
 First public release, archived with a DOI. This is the artifact accompanying a
@@ -10,7 +52,7 @@ device trust boundary.
 
 - Manufacturer-specific Matter cluster `0xFFF1FC02` carrying an opaque bidirectional
   byte tunnel: `TunnelRequest` / `TunnelResponse`, `octet_string<512>` each way.
-  **+612 B flash, 0 B RAM** for the transport alone.
+  **+612 B flash, 0 B RAM** for the transport alone. ⚠️ Corrected in 1.1.0.
 - Application-layer signing in both directions, Ed25519 via PSA. Signature preimage
   binds a domain tag, direction, counter, cluster ID, command ID and a
   length-prefixed device key alongside the payload; each field verified bound by
@@ -23,7 +65,7 @@ device trust boundary.
 - Two transport adapters, the Matter vendor cluster and a direct BLE link, over one
   shared transport-agnostic core, so the measured difference between them is
   attributable to transport alone.
-- Complete security layer: **+19,652 B flash, +3,840 B RAM**.
+- Complete security layer: **+19,652 B flash, +3,840 B RAM**. ⚠️ Corrected in 1.1.0.
 
 ### Measurement
 
