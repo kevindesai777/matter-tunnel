@@ -385,3 +385,50 @@ lowest-noise instrument available here. Build with `bench.conf` / `bench-cc310.c
     `runners.yaml` names the signed artifact and MCUboot rejects an unsigned image.
     Check the hex's address range first: it must stay inside slot0 and never touch
     the factory-data or storage partitions.
+
+---
+
+## 7. Cutting a release
+
+Two steps here are not obvious, and both were learned by getting them wrong on 1.1.0.
+
+**A tag does not publish anything.** Zenodo's GitHub integration listens for a *release*
+event, not a tag push. `git push origin vX.Y.Z` archives nothing; the DOI appears only once a
+GitHub Release exists for that tag. If a tag is pushed and no DOI shows up, this is why.
+
+**The metadata files carry hardcoded results.** `.zenodo.json` embeds the version *and* the
+headline figures in its description prose, and `CITATION.cff` embeds the version and date.
+Neither is generated. A release that corrects a measured figure will publish the old figure
+under a permanent DOI unless these are edited in the same change, which is exactly what
+happened on 1.1.0: the archive and the record describing it disagreed until the record was
+edited by hand afterwards.
+
+In order:
+
+1. Land the code and the docs.
+2. Update `.zenodo.json`: `version`, and every figure in `description` that this release
+   changes. Grep the description for the old numbers rather than trusting a read.
+3. Update `CITATION.cff`: `version` and `date-released`.
+4. Confirm nothing private is staged. `evidence/device-logs/fabric-<ecosystem>*` captures
+   carry that ecosystem's FabricId and NodeId for a real home; they are gitignored, and any
+   equivalent capture must be redacted before it is published.
+5. Sweep the tree for accidental attribution or personal data before pushing.
+6. Commit, `git push origin main`.
+7. `git tag -a vX.Y.Z`, `git push origin vX.Y.Z`.
+8. **Create a GitHub Release for that tag.** This is the step that triggers Zenodo.
+9. Verify the deposition rather than assuming it:
+
+   ```bash
+   curl -sL https://zenodo.org/api/records/<version-id> \
+     | python3 -c "import sys,json;d=json.load(sys.stdin);m=d['metadata']; \
+       print(m['version'], d['conceptdoi']); print([t for t in ['<old figure>'] if t in m['description']])"
+   ```
+
+   Check three things: the `version` field matches the tag, `conceptdoi` is unchanged so the
+   release is a new *version* rather than a separate record, and no superseded figure survives
+   in the description. Then confirm the concept DOI resolves to the new record, since that is
+   the DOI a paper should cite.
+
+If a record is published with wrong metadata, Zenodo permits editing the metadata of a
+published record afterwards. The DOI and the files are fixed; the description and version are
+not. That is the repair path, and it leaves the DOI citable.
