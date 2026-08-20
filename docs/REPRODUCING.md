@@ -131,7 +131,12 @@ The two overlays set `CONFIG_TUNNEL_SECURITY` and `CONFIG_TUNNEL_CLIENT_AUTH`, d
 reduced configuration is meant for deployment: stage 2 carries no authority, and stage 3 signs
 its responses while accepting any caller's requests.
 
-The base must be built with the two MED options set explicitly. The upstream application
+The same four stages build for `examples/light_bulb`, with `-Dlight_bulb_EXTRA_CONF_FILE=`
+and its own overlays. Expect 798,572 B / 799,380 B / 817,192 B / 818,784 B of flash. The
+image name comes from the application directory, so a `lock_` prefix there is a silent no-op.
+The bulb's base needs no MED overlay: it is a Full Thread Device, set in its tracked Kconfig.
+
+The lock's base must be built with the two MED options set explicitly. The upstream application
 defaults to a sleepy end device, which is a different device under test and about 2,500 B
 smaller. Comparing against that would understate every delta.
 

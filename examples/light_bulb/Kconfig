@@ -1,0 +1,33 @@
+#
+# Copyright (c) 2022 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+mainmenu "Matter Light Bulb with VendorTunnel"
+
+# Thread configuration, taken from the upstream sample unchanged. A bulb is
+# mains-powered, so it runs as a Full Thread Device where the lock runs as a
+# Minimal one. That difference belongs to the device type, not to the tunnel.
+if OPENTHREAD
+
+choice OPENTHREAD_NORDIC_LIBRARY_CONFIGURATION
+	default OPENTHREAD_NORDIC_LIBRARY_FTD
+endchoice
+
+choice OPENTHREAD_DEVICE_TYPE
+	default OPENTHREAD_FTD
+endchoice
+
+endif # OPENTHREAD
+
+config CHIP_WIFI
+	default y if SHIELD_NRF7002EB2
+
+source "$(ZEPHYR_CONNECTEDHOMEIP_MODULE_DIR)/config/nrfconnect/chip-module/Kconfig.features"
+source "$(ZEPHYR_CONNECTEDHOMEIP_MODULE_DIR)/config/nrfconnect/chip-module/Kconfig.defaults"
+source "$(ZEPHYR_NRF_MODULE_DIR)/samples/matter/common/src/Kconfig"
+source "Kconfig.zephyr"
+
+# VendorTunnel component options. The same one line as examples/lock -- the
+# component carries its own configuration.
+rsource "../../lib/tunnel/Kconfig"

@@ -7,6 +7,11 @@ build of 1.1.0 is byte-identical to 1.0.0 at 797,600 B of flash and 167,452 B of
 
 ### Added
 
+- `examples/light_bulb`, the second device type. Same component, untouched: a different
+  device class (On/Off and Level Control), a base application 21 KB larger, and a Full
+  Thread Device rather than a Minimal End Device. Every flash delta is identical to the
+  lock's, +20,212 B complete. RAM differs by 64 B of section alignment; the component's
+  static RAM is 2,273 B in both images symbol for symbol.
 - `lib/tunnel/Kconfig`, so the component carries its own configuration instead of each
   example redeclaring it. `CONFIG_TUNNEL_CRYPTO_BENCHMARK` moved here from
   `examples/lock/Kconfig`.
@@ -30,6 +35,12 @@ but the numbers were not re-derived against it. Rebuilt from this tree:
 512 B of the transport stage's RAM is the response buffer `ProcessRequest` writes into. It is
 a cost of the transport-agnostic core. 1.0.0 counted it against the security layer, because
 the Matter-only handler it replaced had built its response inline.
+
+### Changed
+
+- `zap/add_tunnel_cluster.py` chose its endpoint by looking for a Door Lock cluster, which
+  contradicted the device independence it exists to support. It now takes the first
+  application endpoint, skipping the root device. Behaviour is unchanged for the lock.
 
 ### Fixed
 

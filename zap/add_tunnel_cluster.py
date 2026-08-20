@@ -67,7 +67,8 @@ def main():
     ap.add_argument("--zcl", required=True, help="path to our zcl.json, relative to --out")
     ap.add_argument("--templates", required=True, help="path to app-templates.json, relative to --out")
     ap.add_argument("--endpoint-type", type=int, default=None,
-                    help="endpointType index to attach to; default = the one carrying Door Lock")
+                    help="endpointType index to attach to; default = the first "
+                         "application endpoint, i.e. the first one that is not the root device")
     args = ap.parse_args()
 
     with open(args.base) as f:
@@ -83,14 +84,20 @@ def main():
             pkg["pathRelativity"] = "relativeToZap"
 
     # --- pick the endpoint type -------------------------------------------
+    # The tunnel belongs on an application endpoint, never on the root device,
+    # which carries only the mandatory node-wide clusters. Anything else would
+    # tie this script to one device type, and the component is not.
     idx = args.endpoint_type
     if idx is None:
         for i, ep in enumerate(zap.get("endpointTypes", [])):
-            if any(c.get("name") == "Door Lock" for c in ep.get("clusters", [])):
-                idx = i
-                break
+            name = (ep.get("name") or "")
+            device = (ep.get("deviceTypeName") or "")
+            if "rootdevice" in name.lower() or "rootnode" in device.lower():
+                continue
+            idx = i
+            break
     if idx is None:
-        sys.exit("could not locate a target endpoint type; pass --endpoint-type")
+        sys.exit("could not locate an application endpoint type; pass --endpoint-type")
 
     ep = zap["endpointTypes"][idx]
 

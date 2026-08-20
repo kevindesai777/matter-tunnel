@@ -37,3 +37,6 @@ venv/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Same rationale as zap/generated/zap-generated/ - regenerate per docs/REPRODUCING.md
+zap/generated-bulb/zap-generated/
