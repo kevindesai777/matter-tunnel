@@ -12,6 +12,14 @@
 #   ...remove the device in the ecosystem app, noting the exact wording...
 #   ./fabric-unreachable-test.sh after    # restore, re-read fabric table, compare
 #
+# One ecosystem may hold more than one fabric. Set ECO_VIDS to every VendorId it
+# owns and the verdict is reported per fabric, because "released" and "retained"
+# are not the only outcomes once there are two: an ecosystem can release one and
+# keep the other, which consumes a slot no administrator is left to free.
+#
+# Set LABEL to namespace the output files. Without it this overwrites whatever
+# the previous run wrote, which for a published measurement is destructive.
+#
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -25,8 +33,14 @@ OUT="${OUT_DIR:-$HOME/matter-tunnel/evidence/device-logs}"
 NODE="${NODE_ID:-1}"
 # Device extended address, from `ot-ctl child table` on the border router.
 DEV_EXTADDR="${DEV_EXTADDR:?set DEV_EXTADDR to the device extended address}"
-# VendorId of the ecosystem under test.
-ECO_VID="${ECO_VID:-0x110A}"
+# Identifier(s) of the ecosystem's fabric(s), space separated, matched against the
+# boot capture. Prefer Compressed FabricId over VendorId: the device emits VendorId
+# LAST on the line, and a concurrent log line can interleave and truncate it, which
+# would read as a released fabric. Compressed FabricId sits early in the line.
+ECO_VIDS="${ECO_VIDS:-${ECO_VID:-0x110A}}"
+# Namespaces the output files, e.g. LABEL=apple -> fabric-apple-before.txt.
+LABEL="${LABEL:-}"
+PFX="fabric${LABEL:+-$LABEL}"
 # Serial port on the border-router host where the device console enumerates.
 DEV_TTY="${DEV_TTY:-/dev/ttyACM1}"
 
@@ -49,11 +63,11 @@ case "${1:-}" in
 before)
   mkdir -p "$OUT"
   echo "== BASELINE $(date -Iseconds) =="
-  boot_fabrics | tee "$OUT/fabric-before.txt"
+  boot_fabrics | tee "$OUT/$PFX-before.txt"
   echo
   echo "-- CommissionedFabrics --"
   "$CT" operationalcredentials read commissioned-fabrics "$NODE" 0 --storage-directory "$ST" --timeout 30 2>&1 \
-    | sed 's/\x1b\[[0-9;]*m//g' | grep -oE "CommissionedFabrics: [0-9]+" | tail -1 | tee -a "$OUT/fabric-before.txt"
+    | sed 's/\x1b\[[0-9;]*m//g' | grep -oE "CommissionedFabrics: [0-9]+" | tail -1 | tee -a "$OUT/$PFX-before.txt"
   echo
   echo "== CUTTING THE IP PATH (stopping border router) =="
   p 'sudo systemctl stop otbr-agent'; sleep 10
@@ -75,11 +89,11 @@ after)
   done
   echo
   echo "== AFTER $(date -Iseconds) =="
-  boot_fabrics | tee "$OUT/fabric-after.txt"
+  boot_fabrics | tee "$OUT/$PFX-after.txt"
   echo
   echo "-- CommissionedFabrics --"
   "$CT" operationalcredentials read commissioned-fabrics "$NODE" 0 --storage-directory "$ST" --timeout 40 2>&1 \
-    | sed 's/\x1b\[[0-9;]*m//g' | grep -oE "CommissionedFabrics: [0-9]+" | tail -1 | tee -a "$OUT/fabric-after.txt"
+    | sed 's/\x1b\[[0-9;]*m//g' | grep -oE "CommissionedFabrics: [0-9]+" | tail -1 | tee -a "$OUT/$PFX-after.txt"
   echo
   # 🔴 The boot log alone is NOT sufficient. Measured 2026-08-18: the ecosystem
   # defers the removal and delivers it once the device is reachable again, so a
@@ -93,19 +107,65 @@ after)
     | sed 's/\x1b\[[0-9;]*m//g' | grep -oE "CommissionedFabrics: [0-9]+" | tail -1)
   echo "  $FINAL"
   echo "-- fresh boot capture (authoritative: what is actually in NVS) --"
-  boot_fabrics | tee "$OUT/fabric-final.txt"
+  boot_fabrics | tee "$OUT/$PFX-final.txt"
 
-  echo "== VERDICT =="
-  if grep -q "$ECO_VID" "$OUT/fabric-final.txt" 2>/dev/null; then
-    echo "  🔴 FABRIC ORPHANED — VendorId $ECO_VID still present on the device."
-    echo "     The ecosystem cleaned up its own records; the slot is consumed with"
-    echo "     no administrator able to release it. Irreversible short of factory reset."
-  else
-    echo "  ✅ RELEASED — VendorId $ECO_VID is gone despite the device being unreachable"
-    echo "     at removal time. Worth establishing HOW: queued for later delivery, or"
-    echo "     removed on the device's next reachable moment?"
+  echo "== CAPTURE INTEGRITY =="
+  # A verdict is only as good as the capture. The device interleaves log lines, so
+  # a fabric record can be truncated mid-field; a truncated record that happens to
+  # cut before the matched identifier reads exactly like an absent fabric. Refuse to
+  # issue a verdict when the two instruments disagree on how many fabrics exist.
+  # grep -c exits 1 on a zero count, so `|| echo 0` would append a second line and
+  # the arithmetic test below would fail on "0\n0". Force a single value.
+  nrec=$(grep -c "was retrieved from storage" "$OUT/$PFX-final.txt" 2>/dev/null); nrec=${nrec:-0}
+  ntrunc=$(grep "was retrieved from storage" "$OUT/$PFX-final.txt" 2>/dev/null | grep -vc "VendorId 0x[0-9A-Fa-f]"); ntrunc=${ntrunc:-0}
+  ncf=$(echo "$FINAL" | grep -oE "[0-9]+$")
+  echo "  fabric records in boot capture: $nrec"
+  echo "  CommissionedFabrics attribute:  ${ncf:-unknown}"
+  echo "  records with a truncated tail:  $ntrunc"
+  if [ -n "$ncf" ] && [ "$nrec" != "$ncf" ]; then
+    echo "  ⚠️  INSTRUMENTS DISAGREE. Either the removal is still in flight, or the"
+    echo "     capture dropped a record. Re-run the capture before believing anything."
   fi
-  diff "$OUT/fabric-before.txt" "$OUT/fabric-after.txt" && echo "  (no change at all)"
+  [ "$ntrunc" -gt 0 ] && echo "  ⚠️  $ntrunc record(s) truncated. Match on Compressed FabricId, not VendorId."
+
+  echo
+  echo "== VERDICT =="
+  # The fresh boot capture is authoritative: it reads NVS rather than asking the
+  # ecosystem-facing attribute, and the two disagree during the deferral window.
+  held=0; freed=0
+  for vid in $ECO_VIDS; do
+    if grep -qi "$vid" "$OUT/$PFX-final.txt" 2>/dev/null; then
+      echo "  🔴 $vid RETAINED — still in NVS after removal and settling."
+      held=$((held+1))
+    else
+      echo "  ✅ $vid RELEASED — gone despite the device being unreachable at removal."
+      freed=$((freed+1))
+    fi
+  done
+  echo
+  if [ "$held" -gt 0 ] && [ "$freed" -gt 0 ]; then
+    echo "  🔴 PARTIAL RELEASE: $freed released, $held retained. The ecosystem freed"
+    echo "     some of its fabrics and kept others. Every retained slot is consumed"
+    echo "     with no administrator left to release it, and the app reports the"
+    echo "     device as removed either way. This is the sharpest form of the"
+    echo "     exhaustion failure mode."
+  elif [ "$held" -gt 0 ]; then
+    echo "  🔴 RETAINED AT T+60s: all $held fabric(s) still in NVS. The ecosystem"
+    echo "     cleaned up its own records; the slots are consumed for now."
+    echo "     ⚠️  This is NOT yet 'orphaned'. A previous ecosystem deferred removal and"
+    echo "     delivered it ~40 s after reachability returned, so a 60 s settle only"
+    echo "     rules out a SHORT deferral. Re-read the attribute over hours before"
+    echo "     claiming the slot is permanently lost. Declaring orphaned here is the"
+    echo "     same error as the original boot-log-only verdict, inverted."
+  else
+    echo "  ✅ FULLY RELEASED: all $freed fabric(s) freed. Establish HOW — queued for"
+    echo "     later delivery, or removed on the device's next reachable moment?"
+  fi
+  echo
+  echo "-- boot capture: before vs after re-attach (deferral window) --"
+  diff "$OUT/$PFX-before.txt" "$OUT/$PFX-after.txt" && echo "  (identical: removal had not yet been delivered)"
+  echo "-- boot capture: before vs final (settled) --"
+  diff "$OUT/$PFX-before.txt" "$OUT/$PFX-final.txt" && echo "  (identical: nothing was ever removed)"
   ;;
 *) echo "usage: $0 before|after"; exit 1 ;;
 esac

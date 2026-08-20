@@ -21,6 +21,23 @@ build of 1.1.0 is byte-identical to 1.0.0 at 797,600 B of flash and 167,452 B of
 - `examples/lock/footprint-stage2.conf` and `footprint-stage3.conf`, which select those
   stages, and a table of expected figures in `docs/REPRODUCING.md`.
 
+### Changed (tooling)
+
+`tools/fabric-unreachable-test.sh` assumed one ecosystem holding one fabric. It now:
+
+- takes several fabric identifiers in `ECO_VIDS` and reports a verdict per fabric, so an
+  ecosystem that releases one credential and keeps another is distinguishable from one that
+  releases all or none;
+- namespaces its output with `LABEL`, because without it a second run overwrites the evidence
+  behind an already-published result;
+- matches on Compressed FabricId rather than VendorId. The device emits VendorId last on the
+  line and a concurrent log line can interleave and truncate it; a truncated record reads
+  exactly like an absent fabric, which would report a retained credential as released;
+- cross-checks the boot-record count against `CommissionedFabrics` and declines to issue a
+  verdict when the two instruments disagree;
+- no longer claims a fabric is orphaned after a 60-second settle. That only rules out a short
+  deferral, and one ecosystem is known to defer for tens of seconds.
+
 ### Corrected
 
 The 1.0.0 figures below were measured on 2026-08-17, before the core was extracted into
