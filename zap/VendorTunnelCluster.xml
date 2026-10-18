@@ -8,10 +8,11 @@
   neither interpret nor forge. Matter deliberately models none of the payload's
   structure.
 
-  Defined against Matter Core Specification v1.6, Section 7.21 (Manufacturer
-  Specific Extensions). Cluster ID is a Manufacturer Extensible Identifier:
-  the upper 16 bits are the vendor ID, the lower 16 bits are in the
-  manufacturer-specific cluster range 0xFC00-0xFFFE.
+  Defined against Matter Specification 1.4, Section 7.20 (Manufacturer
+  Specific Extensions). The section is 7.19 through Matter 1.3; later
+  releases have not been checked. Cluster ID is a Manufacturer Extensible
+  Identifier: the upper 16 bits are the vendor ID, the lower 16 bits are in
+  the manufacturer-specific cluster range 0xFC00-0xFFFE.
 
     0xFFF1FC02
       ^^^^      vendor ID 0xFFF1 (test vendor; replace for production)

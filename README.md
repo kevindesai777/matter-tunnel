@@ -183,8 +183,9 @@ docs/               REPRODUCING.md: build, flash, measure, from scratch
 
 ## The cluster
 
-Defined against **Matter Core Specification §7.21** (Manufacturer Specific
-Extensions). Note §7.21, not §7.19, which was correct only through Matter 1.3.
+Defined against **Matter Specification 1.4, §7.20** (Manufacturer Specific
+Extensions). The section number moves between releases (it is §7.19 through
+Matter 1.3), and later releases have not been checked against this definition.
 
 | | |
 |---|---|
