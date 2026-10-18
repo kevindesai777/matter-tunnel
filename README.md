@@ -299,13 +299,14 @@ if you mean the software generally.
 |---|---|
 | All versions (concept DOI) | [10.5281/zenodo.22004764](https://doi.org/10.5281/zenodo.22004764) |
 | v1.0.0 | [10.5281/zenodo.22004765](https://doi.org/10.5281/zenodo.22004765) |
+| v1.1.0 | [10.5281/zenodo.22035498](https://doi.org/10.5281/zenodo.22035498) |
 
 ```bibtex
 @software{desai_matter_tunnel_2026,
   author  = {Desai, Kevin},
   title   = {{matter-tunnel: a portable Matter vendor cluster carrying
              application-layer authenticated payloads end-to-end}},
-  version = {1.0.0},
+  version = {1.1.0},
   year    = {2026},
   doi     = {10.5281/zenodo.22004764},
   url     = {https://github.com/kevindesai777/matter-tunnel}

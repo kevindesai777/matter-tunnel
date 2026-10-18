@@ -23,6 +23,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.22004765
     description: Version DOI for v1.0.0
+  - type: doi
+    value: 10.5281/zenodo.22035498
+    description: Version DOI for v1.1.0
 keywords:
   - Matter
   - Thread
