@@ -106,7 +106,8 @@ bench showed link margin alone moving p50 by 6 ms and p99 by 64 ms.
 | | Flash | RAM |
 |---|---:|---:|
 | Tunnel cluster, transport only | **+808 B** | **+576 B** |
-| Complete security layer | **+19,404 B** | **+3,008 B** |
+| Security layer, on top of the transport | **+19,404 B** | **+3,008 B** |
+| Complete component | **+20,212 B** | **+3,584 B** |
 | Resulting image | 797,600 B of 974,698 B (81.83%) | 167,452 B of 256 KB (63.88%) |
 
 Measured against the unmodified application at 777,388 B and 163,868 B, same configuration,
@@ -115,10 +116,11 @@ on 2026-08-20. Every stage rebuilds from this tree; `docs/REPRODUCING.md` has th
 **The same component on a light bulb costs the same, to the byte.** `examples/light_bulb`
 is a different device class on a base application 21 KB larger, running as a Full Thread
 Device rather than a Minimal End Device, and each flash figure above is identical there:
-+808 B for the transport, +20,212 B complete. Its RAM delta is +3,520 B against the lock's
-+3,584 B, and that 64 B is section alignment rather than the component, whose static RAM is
-2,273 B in both images symbol for symbol. The bulb's complete image is 818,784 B (84.00%),
-so the budget a port has to fit into moves even when its cost does not.
++808 B for the transport, +19,404 B for the security layer, +20,212 B complete. Its RAM
+delta is +3,520 B against the lock's +3,584 B, and that 64 B is section alignment rather
+than the component, whose static RAM is 2,273 B in both images symbol for symbol. The
+bulb's complete image is 818,784 B (84.00%), so the budget a port has to fit into moves
+even when its cost does not.
 
 512 B of the transport stage's 576 B is a single response buffer, which exists because
 `tunnel::ProcessRequest` writes into a buffer the transport hands it. That indirection is what
