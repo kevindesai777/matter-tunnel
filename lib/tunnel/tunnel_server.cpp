@@ -3,8 +3,9 @@
  *
  * The cluster carries a single opaque request/response command. All structure
  * lives in this payload protocol, deliberately: Matter models none of it, so
- * the hub cannot interpret or forge it, and the cluster surface stays minimal
- * (one command, two octet strings) which keeps flash cost down.
+ * the hub relays opaque bytes it can read but, with signing enabled, cannot
+ * forge or alter. The cluster surface stays minimal (one command, two octet
+ * strings), which keeps flash cost down.
  *
  * Envelope
  * --------

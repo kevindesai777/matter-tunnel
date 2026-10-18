@@ -2,8 +2,8 @@
 
 A portable manufacturer-specific Matter cluster carrying an opaque bidirectional
 byte tunnel, plus an application-layer signing layer that authenticates payloads end
-to end. An intermediating Matter hub relays bytes it can neither interpret nor forge,
-so the hub keeps its role as a router and loses its role as an authority.
+to end. An intermediating Matter hub relays bytes it can read but cannot forge or
+alter, so the hub keeps its role as a router and loses its role as an authority.
 
 Built clean-room against the public Matter specification and SDK. The component
 carries no device-type semantics and drops into any Matter application. The door lock

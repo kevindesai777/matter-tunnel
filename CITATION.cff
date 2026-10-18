@@ -47,7 +47,8 @@ abstract: >-
   manufacturer-specific cluster carries an opaque bidirectional byte tunnel;
   an application-layer signing layer authenticates payloads end-to-end in both
   directions, binding the device's tunnel key to its own Matter Device
-  Attestation Certificate so a relaying hub can neither read nor forge them.
+  Attestation Certificate so a relaying hub can read them but cannot forge or
+  alter them.
 
   The repository includes the component, a thin example application, an
   interleaved measurement harness, and the raw datasets behind the reported

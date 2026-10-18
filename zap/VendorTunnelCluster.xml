@@ -5,8 +5,8 @@
 
   Purpose: carry application-layer-authenticated payloads end-to-end between a
   client and a device, so that an intermediating Matter hub relays bytes it can
-  neither interpret nor forge. Matter deliberately models none of the payload's
-  structure.
+  read but cannot forge or alter. Matter deliberately models none of the
+  payload's structure.
 
   Defined against Matter Specification 1.4, Section 7.20 (Manufacturer
   Specific Extensions). The section is 7.19 through Matter 1.3; later
