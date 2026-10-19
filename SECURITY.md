@@ -46,9 +46,21 @@ measurement needed one client.
 
 ### 3. Client registration trusts physical presence
 
-A client public key is registered by a button press on the device. That is the same
-assumption Matter's own commissioning makes, and it fails in the same circumstances:
-an attacker with physical access to the device can register their own key.
+The device accepts a client public key only during a short window opened by a
+physical action at the device. The component exposes the trigger,
+`tunnel::GetClientKeyStore().OpenWindow()`, and leaves the action to the
+manufacturer: a reset-pin gesture, setup over a direct link, or whatever the product
+offers. This repository wires it to Button 4 on the nRF52840-DK, in
+`lib/tunnel/tunnel_client_key.cpp`, and no shipping product has that button.
+
+The registration message still travels through the hub. While the 60-second window
+is open, a hostile hub can drop the client's key and register its own. The device
+answers with the key it stored, signed with its tunnel key, so the client can detect
+the substitution but cannot prevent it.
+
+Physical presence is the same assumption Matter's own commissioning makes, and it
+fails in the same circumstances: an attacker with physical access to the device can
+register their own key.
 
 ### 4. Test attestation, not production
 
@@ -63,6 +75,22 @@ Payloads are authenticated end to end, not encrypted. A hub cannot forge or alte
 them; it *can* read them. Matter's own CASE session encrypts the link, so the hub is
 the observer of interest. If payload confidentiality against the hub is required, the
 envelope needs an AEAD layer, which this does not have.
+
+### 6. The tunnel protects only what is sent through it
+
+Every ecosystem that commissions the device becomes a Matter administrator, and an
+administrator can invoke any cluster on it, including this one. The device acts on a
+tunnel payload only when it is signed by the registered client key, so another
+administrator can reach the vendor cluster but cannot use it. The unsigned message
+types fetch the device's public identity, register a key while the window is open,
+or echo bytes for the latency baseline, and carry no authority.
+
+None of this covers the device's standard clusters. In `examples/lock` the standard
+Door Lock cluster is still present, so any commissioned hub can lock and unlock the
+device directly without touching the tunnel. Which operations travel only on the
+signed path is the manufacturer's decision. Taking an operation off the standard
+clusters withdraws it from every ecosystem's control, voice assistants and
+automations included, as well as from a hostile hub.
 
 ## Reporting a vulnerability
 

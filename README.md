@@ -253,7 +253,8 @@ working until someone re-adds it.
 
 **Read [SECURITY.md](SECURITY.md) before building on this.** The swap attack is
 specified and not implemented; one counter space means one client; payloads are
-authenticated but not encrypted.
+authenticated but not encrypted; and the device's standard clusters stay open to
+every hub that commissions it.
 
 ---
 
