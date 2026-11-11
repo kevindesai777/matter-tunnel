@@ -66,7 +66,10 @@ constexpr uint32_t kReserve = 64;
 
 class ReplayGuard {
 public:
-	/* Load the persisted ceiling and set the accept floor to it. */
+	/* Load the persisted ceiling and set the accept floor to it. Fails
+	 * closed: if settings cannot initialise or a stored ceiling cannot be
+	 * read, this returns an error and the server refuses signed commands,
+	 * rather than starting from a floor a reboot could roll back. */
 	CHIP_ERROR Init();
 
 	/* True if `counter` is acceptable (strictly greater than the floor). */

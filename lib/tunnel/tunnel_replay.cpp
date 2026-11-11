@@ -16,12 +16,16 @@ namespace {
 constexpr const char *kSettingsKey = "tunnel/ceiling";
 
 uint32_t gLoaded = 0;
+bool gLoadedSeen = false;
 bool gLoadedValid = false;
 
 int LoadCb(const char *name, size_t len, settings_read_cb read_cb, void *cb_arg, void *param)
 {
 	(void)name;
 	(void)param;
+	/* Seen but unreadable is not the same as absent: a stored ceiling
+	 * exists, and starting from zero would reopen every counter below it. */
+	gLoadedSeen = true;
 	if (len != sizeof(uint32_t)) {
 		return -EINVAL;
 	}
@@ -37,26 +41,34 @@ int LoadCb(const char *name, size_t len, settings_read_cb read_cb, void *cb_arg,
 CHIP_ERROR ReplayGuard::Init()
 {
 	gLoaded = 0;
+	gLoadedSeen = false;
 	gLoadedValid = false;
+	mPersistent = false;
+
+	/* Every failure below fails closed: Init returns an error, and the
+	 * server refuses signed commands until it succeeds. A guard that cannot
+	 * persist its ceiling would accept, after a reboot, counters it had
+	 * already accepted, which is the replay it exists to stop. */
 
 	/* Matter initialises the settings subsystem; calling again is harmless
 	 * and keeps this component self-contained. */
 	int rc = settings_subsys_init();
 	if (rc != 0) {
 		ChipLogError(Zcl, "tunnel-replay: settings_subsys_init failed (%d); "
-				  "counter will NOT survive reboot",
+				  "refusing signed commands",
 			     rc);
-		mFloor = 0;
-		mCeiling = kReserve;
-		mPersistent = false;
-		return CHIP_NO_ERROR;
+		return CHIP_ERROR_PERSISTED_STORAGE_FAILED;
+	}
+
+	rc = settings_load_subtree_direct(kSettingsKey, LoadCb, nullptr);
+	if (rc != 0 || (gLoadedSeen && !gLoadedValid)) {
+		ChipLogError(Zcl, "tunnel-replay: stored ceiling unreadable (%d); "
+				  "refusing signed commands",
+			     rc);
+		return CHIP_ERROR_PERSISTED_STORAGE_FAILED;
 	}
 
 	mPersistent = true;
-	rc = settings_load_subtree_direct(kSettingsKey, LoadCb, nullptr);
-	if (rc != 0) {
-		ChipLogError(Zcl, "tunnel-replay: load failed (%d)", rc);
-	}
 
 	/* The floor starts at the persisted ceiling, never below it. Anything at
 	 * or below has to be treated as possibly-used, because commands may have
@@ -78,17 +90,20 @@ CHIP_ERROR ReplayGuard::Init()
 
 CHIP_ERROR ReplayGuard::PersistCeiling(uint32_t ceiling)
 {
-	mCeiling = ceiling;
-
 	if (!mPersistent) {
-		return CHIP_NO_ERROR;
+		return CHIP_ERROR_INCORRECT_STATE;
 	}
 
+	/* Flash first, RAM after. Raising the RAM ceiling before a write that
+	 * then fails would let later counters below it be accepted with no
+	 * reservation on flash to back them. */
 	int rc = settings_save_one(kSettingsKey, &ceiling, sizeof(ceiling));
 	if (rc != 0) {
 		ChipLogError(Zcl, "tunnel-replay: persist failed (%d)", rc);
 		return CHIP_ERROR_PERSISTED_STORAGE_FAILED;
 	}
+
+	mCeiling = ceiling;
 	return CHIP_NO_ERROR;
 }
 
