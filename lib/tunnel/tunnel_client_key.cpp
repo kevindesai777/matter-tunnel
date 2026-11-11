@@ -106,6 +106,21 @@ CHIP_ERROR ClientKeyStore::Register(const ByteSpan &key)
 	VerifyOrReturnError(WindowOpen(), CHIP_ERROR_ACCESS_DENIED);
 	VerifyOrReturnError(key.size() == sizeof(mKey), CHIP_ERROR_INVALID_ARGUMENT);
 
+	/* Close the window immediately: one registration attempt per press.
+	 * Leaving it open would let a racing hub overwrite the key just
+	 * registered. It closes on failure too, so a retry needs a new press. */
+	mWindowUntilMs = 0;
+
+	/* Flash first, RAM after, as the replay ceiling does. If the write
+	 * fails, the RAM key stays the one on flash; otherwise a reboot would
+	 * quietly bring back the previous key. */
+	int rc = settings_save_one(kSettingsKey, key.data(), sizeof(mKey));
+	if (rc != 0) {
+		ChipLogError(Zcl, "tunnel-clientkey: persist failed (%d); key not registered",
+			     rc);
+		return CHIP_ERROR_PERSISTED_STORAGE_FAILED;
+	}
+
 	memcpy(mKey, key.data(), sizeof(mKey));
 	mKeyLen = sizeof(mKey);
 
@@ -114,15 +129,6 @@ CHIP_ERROR ClientKeyStore::Register(const ByteSpan &key)
 		psa_destroy_key(mImported);
 		mImported = PSA_KEY_ID_NULL;
 	}
-
-	int rc = settings_save_one(kSettingsKey, mKey, sizeof(mKey));
-	if (rc != 0) {
-		ChipLogError(Zcl, "tunnel-clientkey: persist failed (%d)", rc);
-	}
-
-	/* Close the window immediately: one registration per press. Leaving it
-	 * open would let a racing hub overwrite the key just registered. */
-	mWindowUntilMs = 0;
 
 	ChipLogProgress(Zcl, "tunnel-clientkey: registered client key, window closed");
 	return CHIP_NO_ERROR;

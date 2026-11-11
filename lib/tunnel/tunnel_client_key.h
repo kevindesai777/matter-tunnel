@@ -66,7 +66,9 @@ public:
 	bool WindowOpen() const;
 	void OpenWindow();
 
-	/* Store `key` if the window is open. Refused otherwise. */
+	/* Store `key` if the window is open. Refused otherwise. The key is
+	 * written to flash before it replaces the one in RAM; if the write
+	 * fails, registration is refused and the previous key stays in force. */
 	CHIP_ERROR Register(const chip::ByteSpan &key);
 
 	/* Verify `sig` over `msg` using the registered client key. */
