@@ -92,6 +92,27 @@ signed path is the manufacturer's decision. Taking an operation off the standard
 clusters withdraws it from every ecosystem's control, voice assistants and
 automations included, as well as from a hostile hub.
 
+## Fixed in 1.2.0
+
+Versions 1.0.0 and 1.1.0 failed open when flash storage failed.
+
+- **Replay guard ([#1](https://github.com/kevindesai777/matter-tunnel/issues/1)).** If the
+  settings subsystem failed to initialise, the guard ran without persistence and reported
+  success, so a reboot reset the floor to zero and any command already accepted could be
+  replayed. A stored ceiling that could not be read back was treated as a first boot, with
+  the same result. And the ceiling was raised in RAM before it was written, so a failed
+  write left later counters accepted with no reservation on flash.
+- **Client key registration ([#2](https://github.com/kevindesai777/matter-tunnel/issues/2)).**
+  A key that failed to save was still installed in RAM and acknowledged to the client. After
+  a reboot the device went back to the previous key.
+
+Farzam Zohdi reported the first replay-guard path and the registration bug. The other two
+replay-guard paths came up while fixing them. From 1.2.0 the device writes to flash before
+it changes state in RAM. It refuses signed commands when the replay ceiling cannot be written
+or read, and it refuses a registration it cannot save, keeping the previous key. These paths
+have been reviewed and compiled but not exercised on hardware, which needs an injected
+storage fault.
+
 ## Reporting a vulnerability
 
 Open an issue, or email kevindesai777@gmail.com. There is no coordinated-disclosure

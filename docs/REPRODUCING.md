@@ -105,7 +105,8 @@ west flash -d <build-dir>
 ```
 
 Expect 797,600 B of flash (81.83%) and 167,452 B of RAM (63.88%) for the full
-signed build. If the flash figure lands near 79.8% you have a *sleepy* device and the
+signed build of 1.1.0, and 797,688 B of flash with the same RAM for 1.2.0, whose
+fail-closed storage fix adds 88 B. If the flash figure lands near 79.8% you have a *sleepy* device and the
 wrong device under test. Check that `CONFIG_OPENTHREAD_MTD_SED` and
 `CONFIG_CHIP_ENABLE_ICD_SUPPORT` are both unset in the generated `.config`.
 
@@ -117,7 +118,10 @@ in the build varies.
 
 ### 3a. Rebuilding the cost stages
 
-The footprint is reported as cumulative stages, and each is a build:
+The footprint is reported as cumulative stages, and each is a build. The figures below are
+for 1.1.0, the version the paper measured; build tag `v1.1.0` to reproduce them exactly.
+1.2.0 changes code in the last two stages (the replay guard and client key registration), and
+only its complete lock build has been re-measured.
 
 | Stage | Command | Flash | RAM |
 |---|---|---:|---:|

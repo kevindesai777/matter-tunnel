@@ -111,7 +111,9 @@ bench showed link margin alone moving p50 by 6 ms and p99 by 64 ms.
 | Resulting image | 797,600 B of 974,698 B (81.83%) | 167,452 B of 256 KB (63.88%) |
 
 Measured against the unmodified application at 777,388 B and 163,868 B, same configuration,
-on 2026-08-20. Every stage rebuilds from this tree; `docs/REPRODUCING.md` has the commands.
+on 2026-08-20, on version 1.1.0. The 1.2.0 fail-closed storage fix adds 88 B of flash to the
+complete build (797,688 B) and no RAM. Every stage rebuilds from this tree;
+`docs/REPRODUCING.md` has the commands.
 
 **The same component on a light bulb costs the same, to the byte.** `examples/light_bulb`
 is a different device class on a base application 21 KB larger, running as a Full Thread
@@ -235,7 +237,9 @@ device persists a reserved ceiling (`ceiling + 64`) *before* accepting, and keep
 floor in RAM. The floor never moves backwards across a reboot, and flash is written
 once per 64 commands. A reset can lose an acceptance, which is safe. It cannot lose a
 reservation, which would not be. Resync needs no extra exchange: a rejection returns
-the device's floor.
+the device's floor. If the ceiling cannot be written or read back, the device refuses
+signed commands rather than start from a floor a reboot could roll back (from 1.2.0; see
+`SECURITY.md`).
 
 **Key distribution: bind the tunnel key to Matter's own attestation.** The device
 mints a tunnel keypair and signs it with its DAC key, emitting
