@@ -1,5 +1,44 @@
 # Changelog
 
+## 1.2.0 (2026-11-11)
+
+Fails closed when flash storage fails. Earlier versions failed open in the replay guard and
+in client key registration. See "Fixed in 1.2.0" in `SECURITY.md`.
+
+### Fixed
+
+- **Replay guard ([#1](https://github.com/kevindesai777/matter-tunnel/issues/1)), reported by
+  Farzam Zohdi.** `ReplayGuard::Init()` now returns an error when the settings subsystem
+  cannot initialise, instead of running without persistence, and the server refuses signed
+  commands until it succeeds. Two related paths are fixed with it: a stored ceiling that
+  cannot be read back is now an error rather than a first boot, and `PersistCeiling()`
+  raises the RAM ceiling only after the flash write succeeds.
+- **Client key registration ([#2](https://github.com/kevindesai777/matter-tunnel/issues/2)),
+  reported by Farzam Zohdi.** `ClientKeyStore::Register()` writes the key to flash before
+  installing it in RAM. If the write fails, the registration is refused, the previous key
+  stays in force, and the window closes, so a retry needs a new press.
+
+These paths are reviewed and compiled but have not been exercised on hardware, which needs
+an injected storage fault.
+
+The complete lock build grows by 88 B of flash, to 797,688 B, and RAM is unchanged. The
+footprint tables in the README and `docs/REPRODUCING.md` keep the 1.1.0 figures, the ones
+the paper reports, and now say so.
+
+### Documentation
+
+- The README, the archive metadata, the cluster definition and a code comment said a relaying
+  hub could not read tunnel payloads. They now say it can read them but cannot forge or alter
+  them, as `SECURITY.md` already did.
+- `SECURITY.md` adds what the tunnel does not cover: any administrator can still use the
+  device's standard clusters. It also documents the registration trigger,
+  `tunnel::GetClientKeyStore().OpenWindow()`.
+- The cluster definition and README cite Matter Specification 1.4, §7.20 (Manufacturer
+  Specific Extensions), replacing a wrong section number.
+- The README labels the security layer's flash figure as an increment over the transport.
+- `docs/REPRODUCING.md` gains "Cutting a release".
+- `CITATION.cff` lists the 1.1.0 version DOI.
+
 ## 1.1.0 (2026-08-20)
 
 Makes the reported cost reproducible. No change to the shipped configuration: a default
