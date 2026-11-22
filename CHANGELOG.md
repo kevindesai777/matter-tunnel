@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 (2026-11-11)
+## 1.2.0 (2026-11-22)
 
 Fails closed when flash storage fails. Earlier versions failed open in the replay guard and
 in client key registration. See "Fixed in 1.2.0" in `SECURITY.md`.
