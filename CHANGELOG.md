@@ -37,6 +37,8 @@ the paper reports, and now say so.
   Specific Extensions), replacing a wrong section number.
 - The README labels the security layer's flash figure as an increment over the transport.
 - `docs/REPRODUCING.md` gains "Cutting a release".
+- `docs/REPRODUCING.md` creates `zap/generated/zap-generated/` before generating into it.
+  A fresh clone does not have that directory, and `west zap-generate` refused the path.
 - `CITATION.cff` lists the 1.1.0 version DOI.
 
 ## 1.1.0 (2026-08-20)

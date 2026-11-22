@@ -79,7 +79,9 @@ python3 zap/add_tunnel_cluster.py \
   --zcl       zap/generated/zcl.json \
   --templates <workspace>/modules/lib/matter/src/app/zap-templates/app-templates.json
 
-# 3. generate the Matter data model. The -f (full) is not optional, see gotcha 2
+# 3. generate the Matter data model. The -f (full) is not optional, see gotcha 2.
+#    The output directory must exist first; a fresh clone does not have it
+mkdir -p zap/generated/zap-generated
 west zap-generate -f \
   -z zap/generated/lock-tunnel.zap \
   -j zap/generated/zcl.json \
